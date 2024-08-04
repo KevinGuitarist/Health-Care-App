@@ -55,7 +55,7 @@ fun signUp(){
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 100.dp)) {
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 90.dp)) {
                     Text(
                         text = "New Account",
                         fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
