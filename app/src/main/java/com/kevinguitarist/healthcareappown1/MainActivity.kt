@@ -12,19 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.kevinguitarist.healthcareappown1.authentication.loginScreen
 import com.kevinguitarist.healthcareappown1.ui.theme.HealthCareAppOwn1Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
-            true
-        }
+
         enableEdgeToEdge()
         setContent {
             HealthCareAppOwn1Theme {
-
+                loginScreen()
             }
         }
     }
