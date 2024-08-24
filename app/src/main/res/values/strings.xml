@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Health Care App (own1)</string>
+    <string name="Skin_Text">Skin</string>
+    <string name="Firts_Text">Firts</string>
+    <string name="Dermalogy_Center">Dermatology center</string>
+    <string name="Lorem_Text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
+    <string name="Lorem_Text2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
+    <string name="web_client_id">116055241039-jfp8bdk4hctb9o2j2vg8d8m4164qdlgn.apps.googleusercontent.com</string>
+</resources>

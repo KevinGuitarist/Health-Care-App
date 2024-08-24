@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "116055241039",
+    "project_id": "loggingproject-1aa3f",
+    "storage_bucket": "loggingproject-1aa3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116055241039:android:7e28f60554d6e57b97d53a",
+        "android_client_info": {
+          "package_name": "com.kevinguitarist.healthcareappown1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT01-uqvbQbB2y2nvQrAQol_idzeZgMKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
