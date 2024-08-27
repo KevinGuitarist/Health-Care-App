@@ -27,8 +27,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -63,15 +66,12 @@ fun loginScreen(navHostController: NavHostController) {
     var password by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
+    val authViewModel = remember { AuthViewModel() }
+    val authState by authViewModel.authState.observeAsState(AuthState.Idle)
+
     val context = LocalContext.current
     val token = stringResource(R.string.web_client_id)
-    val launcherNav = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) {
-        navHostController.navigate(HomeScreen.route)
-    }
     val currentUser = FirebaseAuth.getInstance().currentUser
-
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) {
@@ -86,12 +86,19 @@ fun loginScreen(navHostController: NavHostController) {
                             Log.d("TAG", "signInWithCredential:success")
                             val user = FirebaseAuth.getInstance().currentUser
                             Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
+                            navHostController.navigate(HomeScreen.route) {
+                                popUpTo(0) {
+                                    inclusive = true // Clear backstack including start destination
+                                }
+                                launchSingleTop = true
+                            }
                         }
                         else {
                             // Sign-in failed, handle the error
                             Log.w("TAG", "signInWithCredential:failure", task.exception)
                             Toast.makeText(context, "Authentication Failed.", Toast.LENGTH_SHORT).show()
                         }
+
                     }
             }
             catch (e: ApiException) {
@@ -230,7 +237,7 @@ fun loginScreen(navHostController: NavHostController) {
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Box(modifier = Modifier.fillMaxWidth()){
-                        Button(onClick = { },
+                        Button(onClick = { authViewModel.handleSignIn(email.text, password.text) },
                             colors = ButtonDefaults.buttonColors(button_Color.Blue),
                             modifier = Modifier.width(207.dp).height(45.dp).align(Alignment.TopCenter)
                         ){
@@ -238,6 +245,27 @@ fun loginScreen(navHostController: NavHostController) {
                                 fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
                                 fontSize = 24.sp
                             )
+                        }
+                    }
+                }
+
+                LaunchedEffect(authState) {
+                    when (authState) {
+                        is AuthState.Success -> {
+                            Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
+                            navHostController.navigate(HomeScreen.route) {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
+                        is AuthState.AuthError -> {
+                            val errorMessage = (authState as AuthState.AuthError).message
+                            Toast.makeText(context, errorMessage ?: "Authentication Failed", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            // Handle other states if necessary
                         }
                     }
                 }

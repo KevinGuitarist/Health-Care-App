@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun HomePage(navHostController: NavHostController){
+fun HomePage(navController: NavHostController){
     Text(
         text = "Home Page",
         fontSize = 50.sp,

@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,18 +28,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun NavigationMain(){
     val currentUser = FirebaseAuth.getInstance().currentUser
     val navController = rememberNavController()
+
     LaunchedEffect(currentUser) {
         // Reload user to check if they are still valid
         currentUser?.reload()?.addOnCompleteListener { task ->
             if (task.isSuccessful && currentUser != null) {
                 // User is still valid, navigate to HomeScreen
                 navController.navigate(HomeScreen.route) {
-                    popUpTo(navController.graph.startDestinationId) {
+                    popUpTo(0) {
                         inclusive = true // Clear backstack including start destination
                     }
                     launchSingleTop = true
@@ -48,7 +47,7 @@ fun NavigationMain(){
             } else {
                 // User has been deleted or sign in failed, navigate to WelcomeScreen
                 navController.navigate(WelcomeScreen.route) {
-                    popUpTo(navController.graph.startDestinationId) {
+                    popUpTo(0) {
                         inclusive = true // Clear backstack including start destination
                     }
                     launchSingleTop = true
@@ -65,7 +64,7 @@ fun NavigationMain(){
         }
     }
 
-    NavHost(navController = navController, startDestination = WelcomeScreen.route){
+    NavHost(navController = navController, startDestination = if (currentUser != null) HomeScreen.route else WelcomeScreen.route){
         composable(WelcomeScreen.route){
             welcomeScreen(navController)
         }

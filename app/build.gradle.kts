@@ -54,10 +54,12 @@ android {
 
 dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
+    implementation(libs.androidx.runtime.livedata)
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation (platform("com.google.firebase:firebase-bom:31.0.0"))
     implementation ("androidx.core:core-splashscreen:1.0.0-beta02")
+    implementation("com.facebook.android:facebook-login:latest.release")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
