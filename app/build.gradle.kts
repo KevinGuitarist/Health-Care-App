@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kevinguitarist.healthcareappown1"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -53,6 +53,7 @@ android {
 }
 
 dependencies {
+    implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("com.google.dagger:hilt-android:2.44")
     implementation(libs.androidx.runtime.livedata)
     kapt("com.google.dagger:hilt-android-compiler:2.44")
