@@ -211,5 +211,16 @@ fun HomePage(navHostController: NavHostController) {
                 }
             )
         }
+
+        Spacer(modifier = Modifier.height(13.dp))
+
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(230.dp)
+            .background(Color(0xFFCAD6FF))
+            .width(360.dp)
+        ){
+
+        }
     }
 }

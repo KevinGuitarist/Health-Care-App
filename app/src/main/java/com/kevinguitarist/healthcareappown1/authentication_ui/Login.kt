@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -66,8 +67,8 @@ fun loginScreen(navHostController: NavHostController) {
     var password by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    val authViewModel = remember { AuthViewModel() }
-    val authState by authViewModel.authState.observeAsState(AuthState.Idle)
+    val loginViewModel = remember { LoginViewModel() }
+    val authState by loginViewModel.authState.observeAsState(AuthState.Idle)
 
     val context = LocalContext.current
     val token = stringResource(R.string.web_client_id)
@@ -162,19 +163,21 @@ fun loginScreen(navHostController: NavHostController) {
                     decorationBox = { innerTextField ->
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth().fillMaxHeight()
-                                .padding(top = 15.dp, start = 13.dp, end = 32.dp, bottom = 5.dp)
+                                .fillMaxSize()
+                                .padding(start = 13.dp)
                         ){
                             if (email.text.isEmpty()) {
                                 Text(
-                                    modifier =  Modifier.height(30.dp),
+                                    modifier =  Modifier.align(Alignment.CenterStart),
                                     text = "example@example.com",
                                     color = Color(0xFF809CFF),
                                     fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
-                                    fontSize = 20.sp
+                                    fontSize = 18.sp
                                 )
                             }
-                            innerTextField()
+                            Box(modifier = Modifier.align(Alignment.CenterStart)){
+                                innerTextField()
+                            }
                         }
                     }
                 )
@@ -195,28 +198,28 @@ fun loginScreen(navHostController: NavHostController) {
                     modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF), RoundedCornerShape(13.dp)),
                     maxLines = 1,
                     decorationBox = { innerTextField ->
-                        Row(modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 13.dp, top = 14.dp, bottom = 15.dp)){
-                            Box(modifier = Modifier.width(240.dp).height(12.dp).align(Alignment.CenterVertically)) {
+                        Row(modifier = Modifier.fillMaxSize().padding(start = 12.dp)){
+                            Box(modifier = Modifier.fillMaxSize()) {
                                 if (password.text.isEmpty()){
-                                    Text(text = "*************",
-                                        fontSize = 20.sp,
+                                    Text(text = "***********",
+                                        fontSize = 25.sp,
                                         fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
-                                        color = Color(0xFF809CFF)
+                                        color = Color(0xFF809CFF),
+                                        modifier = Modifier.align(Alignment.CenterStart).padding(top = 13.dp)
                                     )
                                 }
-                                innerTextField()
+                                Box(modifier = Modifier.align(Alignment.CenterStart).width(240.dp)){
+                                    innerTextField()
+                                }
                             }
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                                contentAlignment = Alignment.TopEnd){
-                                Icon(painter = painterResource(R.drawable.hide_eyeicon),
-                                    contentDescription = "HideEye",
-                                    modifier = Modifier.clickable {  }
-                                )
-                            }
-
                         }
+                        Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.CenterEnd).padding(end = 10.dp)){
+                            Icon(painter = painterResource(R.drawable.hide_eyeicon),
+                                contentDescription = "HideEye",
+                                modifier = Modifier.clickable {  }
+                            )
+                        }
+
                     }
                 )
 
@@ -228,7 +231,7 @@ fun loginScreen(navHostController: NavHostController) {
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
                             color = Color(0xFF2260FF),
-                            modifier = Modifier.align(Alignment.CenterEnd)
+                            modifier = Modifier.align(Alignment.CenterEnd).clickable {  }
                         )
                     }
                 }
@@ -237,7 +240,7 @@ fun loginScreen(navHostController: NavHostController) {
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Box(modifier = Modifier.fillMaxWidth()){
-                        Button(onClick = { authViewModel.handleSignIn(email.text, password.text) },
+                        Button(onClick = { loginViewModel.handleSignIn(email.text, password.text) },
                             colors = ButtonDefaults.buttonColors(button_Color.Blue),
                             modifier = Modifier.width(207.dp).height(45.dp).align(Alignment.TopCenter)
                         ){
@@ -331,8 +334,31 @@ fun loginScreen(navHostController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(38.dp))
 
-                    Texts(navHostController)
+                Texts(navHostController)
 
+                Spacer(modifier = Modifier.height(17.dp))
+
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
+                        Text(text = "or",
+                            fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(18.dp))
+
+                    Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
+                        Icon(painter = painterResource(R.drawable.doctor_login_button),
+                            contentDescription = "FingerPrint",
+                            modifier = Modifier
+                                .clickable {  }
+                                .size(45.dp),
+                            tint = Color.Unspecified
+                            //    Color(0xFF2260FF)
+                        )
+                    }
+                }
             }
         }
     }

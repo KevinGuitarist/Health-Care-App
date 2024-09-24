@@ -53,6 +53,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-auth:22.0.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("com.google.dagger:hilt-android:2.44")
     implementation(libs.androidx.runtime.livedata)
