@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,18 +52,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kevinguitarist.healthcareappown.ui.theme.button_Color
 import com.kevinguitarist.healthcareappown1.HomeScreen
-import com.kevinguitarist.healthcareappown1.LoginDoctorScreen
 import com.kevinguitarist.healthcareappown1.R
+import com.kevinguitarist.healthcareappown1.SignUpDoctorScreen
 import com.kevinguitarist.healthcareappown1.SignUpScreen
 import com.kevinguitarist.healthcareappown1.WelcomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun loginScreen(navHostController: NavHostController) {
-    var email by rememberSaveable(stateSaver = TextFieldValue.Saver){
+fun Login_Doctor(navHostController: NavHostController) {
+    var email_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    var password by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var password_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
     val loginViewModel = remember { LoginViewModel() }
@@ -108,7 +106,7 @@ fun loginScreen(navHostController: NavHostController) {
             }
     }
 
-        Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 120.dp)){
@@ -117,7 +115,7 @@ fun loginScreen(navHostController: NavHostController) {
                         fontSize = 24.sp,
                         color = Color(0xFF2260FF),
 
-                    )
+                        )
                 }
             },
             navigationIcon = {
@@ -131,7 +129,7 @@ fun loginScreen(navHostController: NavHostController) {
 
         Box(modifier = Modifier.fillMaxSize().padding(start = 30.dp, top = 10.dp, end = 30.dp)){
             Column {
-                Text(text = "Welcome",
+                Text(text = "Welcome Doctor",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
                     fontSize = 24.sp,
                     color = Color(0xFF2260FF)
@@ -155,8 +153,8 @@ fun loginScreen(navHostController: NavHostController) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 BasicTextField(
-                    value = email,
-                    onValueChange = {email = it},
+                    value = email_doctor,
+                    onValueChange = {email_doctor = it},
                     modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF),
                         RoundedCornerShape(13.dp)
                     ),
@@ -167,7 +165,7 @@ fun loginScreen(navHostController: NavHostController) {
                                 .fillMaxSize()
                                 .padding(start = 13.dp)
                         ){
-                            if (email.text.isEmpty()) {
+                            if (email_doctor.text.isEmpty()) {
                                 Text(
                                     modifier =  Modifier.align(Alignment.CenterStart),
                                     text = "example@example.com",
@@ -194,14 +192,14 @@ fun loginScreen(navHostController: NavHostController) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 BasicTextField(
-                    value = password,
-                    onValueChange = {password = it},
+                    value = password_doctor,
+                    onValueChange = {password_doctor = it},
                     modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF), RoundedCornerShape(13.dp)),
                     maxLines = 1,
                     decorationBox = { innerTextField ->
                         Row(modifier = Modifier.fillMaxSize().padding(start = 12.dp)){
                             Box(modifier = Modifier.fillMaxSize()) {
-                                if (password.text.isEmpty()){
+                                if (password_doctor.text.isEmpty()){
                                     Text(text = "***********",
                                         fontSize = 25.sp,
                                         fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
@@ -241,7 +239,7 @@ fun loginScreen(navHostController: NavHostController) {
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Box(modifier = Modifier.fillMaxWidth()){
-                        Button(onClick = { loginViewModel.handleSignIn(email.text, password.text) },
+                        Button(onClick = { loginViewModel.handleSignIn(email_doctor.text, password_doctor.text) },
                             colors = ButtonDefaults.buttonColors(button_Color.Blue),
                             modifier = Modifier.width(207.dp).height(45.dp).align(Alignment.TopCenter)
                         ){
@@ -335,38 +333,15 @@ fun loginScreen(navHostController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(38.dp))
 
-                Texts(navHostController)
+                Texts_Doctor(navHostController)
 
-                Spacer(modifier = Modifier.height(17.dp))
-
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
-                        Text(text = "or",
-                            fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
-                            fontSize = 12.sp
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(18.dp))
-
-                    Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
-                        Icon(painter = painterResource(R.drawable.doctor_login_button),
-                            contentDescription = "FingerPrint",
-                            modifier = Modifier
-                                .clickable { navHostController.navigate(LoginDoctorScreen.route) }
-                                .size(45.dp),
-                            tint = Color.Unspecified
-                            //    Color(0xFF2260FF)
-                        )
-                    }
-                }
             }
         }
     }
 }
 
 @Composable
-fun Texts(navHostController: NavHostController){
+fun Texts_Doctor(navHostController: NavHostController){
     Row(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
         Box(){
             Text(text = "Don't have an account?",
@@ -380,9 +355,8 @@ fun Texts(navHostController: NavHostController){
                 fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
                 color = Color(0xFF2260FF),
                 fontSize = 12.sp,
-                modifier = Modifier.clickable {navHostController.navigate(SignUpScreen.route)}
+                modifier = Modifier.clickable {navHostController.navigate(SignUpDoctorScreen.route)}
             )
         }
     }
 }
-

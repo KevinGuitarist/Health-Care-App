@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -23,7 +22,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -49,32 +47,30 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.kevinguitarist.healthcareappown.ui.theme.button_Color
-import com.kevinguitarist.healthcareappown1.LoginDoctorScreen
 import com.kevinguitarist.healthcareappown1.LoginScreen
 import com.kevinguitarist.healthcareappown1.R
-import com.kevinguitarist.healthcareappown1.SignUpDoctorScreen
 import com.kevinguitarist.healthcareappown1.WelcomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun signUp(navHostController: NavHostController) {
+fun signUp_doctor(navHostController: NavHostController) {
 
-    var email by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var email_signup_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    var name by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var name_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    var password by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var password_signup_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    var mobile_number by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var mobile_number_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    var dob by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var dob_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
-    var otp by rememberSaveable(stateSaver = TextFieldValue.Saver){
+    var otp_doctor by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
 
@@ -124,8 +120,8 @@ fun signUp(navHostController: NavHostController) {
                         Spacer(modifier = Modifier.height(12.dp))
 
                         BasicTextField(
-                            value = name,
-                            onValueChange = {name = it},
+                            value = name_doctor,
+                            onValueChange = {name_doctor = it},
                             modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF),
                                 RoundedCornerShape(13.dp)
                             ),
@@ -136,7 +132,7 @@ fun signUp(navHostController: NavHostController) {
                                         .fillMaxSize()
                                         .padding(start = 13.dp)
                                 ){
-                                    if (name.text.isEmpty()) {
+                                    if (name_doctor.text.isEmpty()) {
                                         Text(
                                             modifier =  Modifier.align(Alignment.CenterStart),
                                             text = "XYZ",
@@ -162,14 +158,14 @@ fun signUp(navHostController: NavHostController) {
                         Spacer(modifier = Modifier.height(15.dp))
 
                         BasicTextField(
-                            value = password,
-                            onValueChange = {password = it},
+                            value = password_signup_doctor,
+                            onValueChange = {password_signup_doctor = it},
                             modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF), RoundedCornerShape(13.dp)),
                             maxLines = 1,
                             decorationBox = { innerTextField ->
                                 Row(modifier = Modifier.fillMaxSize().padding(start = 13.dp, end = 3.dp)){
                                     Box(modifier = Modifier.fillMaxSize()) {
-                                        if (password.text.isEmpty()){
+                                        if (password_signup_doctor.text.isEmpty()){
                                             Text(text = "***********",
                                                 fontSize = 25.sp,
                                                 fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
@@ -202,8 +198,8 @@ fun signUp(navHostController: NavHostController) {
                         Spacer(modifier = Modifier.height(12.dp))
 
                         BasicTextField(
-                            value = email,
-                            onValueChange = {email = it},
+                            value = email_signup_doctor,
+                            onValueChange = {email_signup_doctor = it},
                             modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF),
                                 RoundedCornerShape(13.dp)
                             ),
@@ -214,7 +210,7 @@ fun signUp(navHostController: NavHostController) {
                                         .fillMaxSize()
                                         .padding(start = 13.dp)
                                 ){
-                                    if (email.text.isEmpty()) {
+                                    if (email_signup_doctor.text.isEmpty()) {
                                         Text(
                                             modifier =  Modifier.align(Alignment.CenterStart),
                                             text = "example@example.com",
@@ -242,8 +238,8 @@ fun signUp(navHostController: NavHostController) {
                         Row(modifier = Modifier.fillMaxWidth()){
                             Box(modifier = Modifier.width(188.dp).height(45.dp)){
                                 BasicTextField(
-                                    value =  mobile_number,
-                                    onValueChange = { mobile_number = it},
+                                    value =  mobile_number_doctor,
+                                    onValueChange = { mobile_number_doctor = it},
                                     modifier = Modifier.fillMaxWidth().height(45.dp).width(45.dp).background(Color(0xFFECF1FF),
                                         RoundedCornerShape(13.dp)
                                     ),
@@ -252,7 +248,7 @@ fun signUp(navHostController: NavHostController) {
                                         Box(
                                             modifier = Modifier.fillMaxSize().padding(start = 13.dp)
                                         ){
-                                            if ( mobile_number.text.isEmpty()) {
+                                            if ( mobile_number_doctor.text.isEmpty()) {
                                                 Text(
                                                     text = "Enter Number",
                                                     color = Color(0xFF809CFF),
@@ -295,8 +291,8 @@ fun signUp(navHostController: NavHostController) {
                         Spacer(modifier = Modifier.height(12.dp))
 
                         BasicTextField(
-                            value =  otp,
-                            onValueChange = { otp = it},
+                            value =  otp_doctor,
+                            onValueChange = { otp_doctor = it},
                             modifier = Modifier.fillMaxSize().height(45.dp).background(Color(0xFFECF1FF),
                                 RoundedCornerShape(13.dp)
                             ),
@@ -305,7 +301,7 @@ fun signUp(navHostController: NavHostController) {
                                 Box(
                                     modifier = Modifier.fillMaxSize().padding(start = 13.dp)
                                 ){
-                                    if ( otp.text.isEmpty()) {
+                                    if ( otp_doctor.text.isEmpty()) {
                                         Text(
                                             modifier = Modifier.align(Alignment.CenterStart).padding(top = 13.dp),
                                             text = "****",
@@ -331,8 +327,8 @@ fun signUp(navHostController: NavHostController) {
                         Spacer(modifier = Modifier.height(12.dp))
 
                         BasicTextField(
-                            value = dob,
-                            onValueChange = {dob = it},
+                            value = dob_doctor,
+                            onValueChange = {dob_doctor = it},
                             modifier = Modifier.fillMaxWidth().height(45.dp).background(Color(0xFFECF1FF),
                                 RoundedCornerShape(13.dp)
                             ),
@@ -343,7 +339,7 @@ fun signUp(navHostController: NavHostController) {
                                         .fillMaxWidth().fillMaxHeight()
                                         .padding(top = 14.dp, start = 24.dp, end = 32.dp, bottom = 14.dp)
                                 ){
-                                    if (dob.text.isEmpty()) {
+                                    if (dob_doctor.text.isEmpty()) {
                                         Text(
                                             modifier =  Modifier.height(30.dp).width(144.dp),
                                             text = "DD / MM / YY",
@@ -361,14 +357,13 @@ fun signUp(navHostController: NavHostController) {
 
                         Spacer(modifier = Modifier.height(38.dp))
 
-
                         TermsAndCond()
 
                         Spacer(modifier = Modifier.height(11.dp))
 
                         Row(modifier = Modifier.fillMaxWidth()) {
                             Box(modifier = Modifier.fillMaxWidth()){
-                                Button(onClick = { signUpViewModel.handleSignIn(email.text, password.text) },
+                                Button(onClick = { signUpViewModel.handleSignIn(email_signup_doctor.text, password_signup_doctor.text) },
                                     colors = ButtonDefaults.buttonColors(button_Color.Blue),
                                     modifier = Modifier.width(207.dp).height(45.dp).align(Alignment.TopCenter)
                                 ){
@@ -427,94 +422,12 @@ fun signUp(navHostController: NavHostController) {
 
                         AlreadyHaveAnAccount(navHostController)
 
-                        Spacer(modifier = Modifier.height(17.dp))
-
-                        Column(modifier = Modifier.fillMaxWidth()) {
-                            Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
-                                Text(text = "or",
-                                    fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
-                                    fontSize = 12.sp
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(18.dp))
-
-                            Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
-                                Icon(painter = painterResource(R.drawable.doctor_login_button),
-                                    contentDescription = "FingerPrint",
-                                    modifier = Modifier
-                                        .clickable { navHostController.navigate(SignUpDoctorScreen.route) }
-                                        .size(45.dp),
-                                    tint = Color.Unspecified
-                                    //    Color(0xFF2260FF)
-                                )
-                            }
-                        }
-
                         Spacer(modifier = Modifier.height(20.dp))
+
 
                     }
                 }
             }
         }
     )
-}
-
-
-@Composable
-fun TermsAndCond(){
-    Row(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        Text(text = "By continuing, you agree to",
-            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
-            fontSize = 12.sp
-        )
-    }
-
-    Spacer(modifier = Modifier.height(2.dp))
-
-    Row(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        Box(){
-            Text(text = "Terms of Use",
-                fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
-                color = Color(0xFF2260FF),
-                fontSize = 12.sp,
-                modifier = Modifier.clickable {  }
-            )
-        }
-        Box(){
-            Text(text = "and",
-                fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
-                fontSize = 12.sp
-            )
-        }
-        Box(){
-            Text(text = "Privacy Policy.",
-                fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
-                color = Color(0xFF2260FF),
-                fontSize = 12.sp,
-                modifier = Modifier.clickable {  }
-            )
-        }
-    }
-}
-
-@Composable
-fun AlreadyHaveAnAccount(navHostController: NavHostController){
-    Row(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        Box(){
-            Text(text = "already have an account?",
-                fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
-                fontSize = 12.sp
-
-            )
-        }
-        Box(){
-            Text(text = "Log in",
-                fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
-                color = Color(0xFF2260FF),
-                fontSize = 12.sp,
-                modifier = Modifier.clickable { navHostController.navigate(LoginScreen.route) }
-            )
-        }
-    }
 }

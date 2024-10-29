@@ -11,8 +11,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.kevinguitarist.healthcareappown1.authentication_ui.Login_Doctor
 import com.kevinguitarist.healthcareappown1.authentication_ui.loginScreen
 import com.kevinguitarist.healthcareappown1.authentication_ui.signUp
+import com.kevinguitarist.healthcareappown1.authentication_ui.signUp_doctor
 import com.kevinguitarist.healthcareappown1.ui.theme.HealthCareAppOwn1Theme
 
 class MainActivity : ComponentActivity() {
@@ -76,6 +78,12 @@ fun NavigationMain(){
         }
         composable(HomeScreen.route){
             HomePage(navController)
+        }
+        composable(LoginDoctorScreen.route){
+            Login_Doctor(navController)
+        }
+        composable(SignUpDoctorScreen.route){
+            signUp_doctor(navController)
         }
     }
 }

@@ -15,3 +15,9 @@ object SignUpScreen : Destinations{
 object HomeScreen : Destinations {
     override val route: String = "HomeScreen"
 }
+object LoginDoctorScreen : Destinations {
+    override val route: String = "LoginDoctorScreen"
+}
+object SignUpDoctorScreen : Destinations {
+    override val route: String = "SignUpDoctorScreen"
+}
