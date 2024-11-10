@@ -58,6 +58,7 @@ import com.kevinguitarist.healthcareappown1.LoginDoctorScreen
 import com.kevinguitarist.healthcareappown1.R
 import com.kevinguitarist.healthcareappown1.SignUpScreen
 import com.kevinguitarist.healthcareappown1.WelcomeScreen
+import com.kevinguitarist.healthcareappown1.saveUserType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -257,6 +258,7 @@ fun loginScreen(navHostController: NavHostController) {
                     when (authState) {
                         is AuthState.Success -> {
                             Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
+                            saveUserType(context, "patient")  // Save user type as "patient"
                             navHostController.navigate(HomeScreen.route) {
                                 popUpTo(0) {
                                     inclusive = true

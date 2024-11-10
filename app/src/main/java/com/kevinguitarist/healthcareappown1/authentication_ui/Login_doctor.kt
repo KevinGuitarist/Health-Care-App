@@ -51,11 +51,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kevinguitarist.healthcareappown.ui.theme.button_Color
+import com.kevinguitarist.healthcareappown1.HomePage_doctors
 import com.kevinguitarist.healthcareappown1.HomeScreen
+import com.kevinguitarist.healthcareappown1.HomeScreenDoctor
 import com.kevinguitarist.healthcareappown1.R
 import com.kevinguitarist.healthcareappown1.SignUpDoctorScreen
 import com.kevinguitarist.healthcareappown1.SignUpScreen
 import com.kevinguitarist.healthcareappown1.WelcomeScreen
+import com.kevinguitarist.healthcareappown1.saveUserType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +89,8 @@ fun Login_Doctor(navHostController: NavHostController) {
                             Log.d("TAG", "signInWithCredential:success")
                             val user = FirebaseAuth.getInstance().currentUser
                             Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
-                            navHostController.navigate(HomeScreen.route) {
+                            saveUserType(context, "doctor")                                        // Save user type as "doctor"
+                            navHostController.navigate(HomeScreenDoctor.route) {
                                 popUpTo(0) {
                                     inclusive = true // Clear backstack including start destination
                                 }

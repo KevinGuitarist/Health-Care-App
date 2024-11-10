@@ -1,11 +1,13 @@
 package com.kevinguitarist.healthcareappown1
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,57 +36,59 @@ class MainActivity : ComponentActivity() {
 fun NavigationMain(){
     val currentUser = FirebaseAuth.getInstance().currentUser
     val navController = rememberNavController()
+    val context = LocalContext.current
 
     LaunchedEffect(currentUser) {
-        // Reload user to check if they are still valid
         currentUser?.reload()?.addOnCompleteListener { task ->
             if (task.isSuccessful && currentUser != null) {
-                // User is still valid, navigate to HomeScreen
-                navController.navigate(HomeScreen.route) {
-                    popUpTo(0) {
-                        inclusive = true // Clear backstack including start destination
+                val userType = getUserType(context)
+                if (userType == "doctor") {
+                    navController.navigate(HomeScreenDoctor.route) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
                     }
-                    launchSingleTop = true
+                } else {
+                    navController.navigate(HomeScreen.route) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
             } else {
-                // User has been deleted or sign in failed, navigate to WelcomeScreen
                 navController.navigate(WelcomeScreen.route) {
-                    popUpTo(0) {
-                        inclusive = true // Clear backstack including start destination
-                    }
+                    popUpTo(0) { inclusive = true }
                     launchSingleTop = true
                 }
             }
         } ?: run {
-            // No user is signed in, navigate to WelcomeScreen
             navController.navigate(WelcomeScreen.route) {
                 popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true // Clear backstack including start destination
+                    inclusive = true
                 }
                 launchSingleTop = true
             }
         }
     }
 
-    NavHost(navController = navController, startDestination = if (currentUser != null) HomeScreen.route else WelcomeScreen.route){
-        composable(WelcomeScreen.route){
-            welcomeScreen(navController)
-        }
-        composable(LoginScreen.route){
-            loginScreen(navController)
-        }
-        composable(SignUpScreen.route){
-            signUp(navController)
-        }
-        composable(HomeScreen.route){
-            HomePage(navController)
-        }
-        composable(LoginDoctorScreen.route){
-            Login_Doctor(navController)
-        }
-        composable(SignUpDoctorScreen.route){
-            signUp_doctor(navController)
-        }
+    NavHost(navController = navController, startDestination = WelcomeScreen.route) {
+        composable(WelcomeScreen.route) { welcomeScreen(navController) }
+        composable(LoginScreen.route) { loginScreen(navController) }
+        composable(SignUpScreen.route) { signUp(navController) }
+        composable(HomeScreen.route) { HomePage(navController) }
+        composable(LoginDoctorScreen.route) { Login_Doctor(navController) }
+        composable(SignUpDoctorScreen.route) { signUp_doctor(navController) }
+        composable(HomeScreenDoctor.route) { HomePage_doctors(navController) }
     }
 }
+
+fun saveUserType(context: Context, userType: String) {
+    val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+    sharedPreferences.edit().putString("userType", userType).apply()
+}
+
+fun getUserType(context: Context): String? {
+    val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+    return sharedPreferences.getString("userType", null)
+}
+
+
 
