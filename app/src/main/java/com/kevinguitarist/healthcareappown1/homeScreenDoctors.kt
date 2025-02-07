@@ -1,5 +1,7 @@
 package com.kevinguitarist.healthcareappown1
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -36,16 +39,25 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.kevinguitarist.healthcareappown.ui.theme.button_Color
+import com.kevinguitarist.healthcareappown1.database.DoctorDatabaseManager
+import com.kevinguitarist.healthcareappown1.database.DoctorInformation
+import android.net.Uri
+import androidx.compose.runtime.rememberCoroutineScope
 
 @Composable
-fun HomePage_doctors(navHostController: NavHostController){
+fun homescreenDoctors(navHostController: NavHostController, context: Context){
     var doctorName by remember { mutableStateOf("XYZ") }
+    val doctorDatabaseManager = remember { DoctorDatabaseManager() }
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var imageUrl by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         val user = FirebaseAuth.getInstance().currentUser
@@ -69,14 +81,55 @@ fun HomePage_doctors(navHostController: NavHostController){
     var about by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
+
     var career_path by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
+
     var Highlights by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
 
     val scrollState = rememberScrollState()
+
+    var showDaySelectionDialog by remember { mutableStateOf(false) }
+
+    var selectedDays by remember { mutableStateOf("Monday - Saturday") }
+
+    var showTimeSelectionDialog by remember { mutableStateOf(false) }
+
+    var selectedTime by remember { mutableStateOf("9:00 AM - 5:00 PM") }
+
+    fun saveDoctorInformation() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId == null) {
+            Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val doctorInfo = DoctorInformation(
+            profile = profile.text,
+            experience = experience.text,
+            focus = focus.text,
+            about = about.text,
+            careerPath = career_path.text,
+            highlights = Highlights.text,
+            workingDays = selectedDays,
+            workingHours = selectedTime,
+            userId = userId
+        )
+
+        doctorDatabaseManager.saveDoctorInformation(
+            doctorInfo = doctorInfo,
+            onSuccess = {
+                Toast.makeText(context, "Information saved successfully", Toast.LENGTH_SHORT).show()
+                // You can navigate to next screen here using navHostController if needed
+            },
+            onError = { errorMessage ->
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
     Box(modifier = Modifier.fillMaxSize().padding(start = 30.dp, top = 75.dp, end = 30.dp, bottom = 32.dp).verticalScroll(scrollState)){
         Column (modifier = Modifier.fillMaxSize()){
@@ -88,7 +141,7 @@ fun HomePage_doctors(navHostController: NavHostController){
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            Text(text = doctorName,
+            Text(text = "Dr. $doctorName",
                 color = Color.Blue,
                 fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
                 fontSize = 14.sp
@@ -146,6 +199,7 @@ fun HomePage_doctors(navHostController: NavHostController){
             val stroke = Stroke(width = 5f,
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
             )
+
             Box(
                 modifier = Modifier
                     .height(39.dp)
@@ -213,7 +267,14 @@ fun HomePage_doctors(navHostController: NavHostController){
 
             BasicTextField(
                 value = experience,
-                onValueChange = {experience = it},
+                onValueChange = {newValue ->
+                    // Only allow numbers and limit to 2 digits
+                    if (newValue.text.isEmpty() || (newValue.text.all { it.isDigit() } && newValue.text.length <= 2)) {
+                        experience = newValue
+                    } },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
                 modifier = Modifier.height(35.dp).width(80.dp).background(Color(0xFFECF1FF),
                     RoundedCornerShape(8.dp)
                 ),
@@ -227,7 +288,7 @@ fun HomePage_doctors(navHostController: NavHostController){
                         if (experience.text.isEmpty()) {
                             Text(
                                 modifier =  Modifier.align(Alignment.CenterStart),
-                                text = "eg: 2yrs",
+                                text = "eg: 25yrs",
                                 color = Color(0xFF809CFF),
                                 fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
                                 fontSize = 14.sp
@@ -461,26 +522,36 @@ fun HomePage_doctors(navHostController: NavHostController){
                     Box(
                         modifier = Modifier
                             .height(39.dp)
-                            .width(110.dp)
+                            .width(140.dp)
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(5.dp))
-                            .clickable {  }
+                            .clickable { showDaySelectionDialog = true }
                             .background(color = Color(0xFFEAEFFF))
                             .drawBehind {
                                 drawRoundRect(color = Color.Blue, style = stroke)
                             }
                     ){
-                        Text(text = "Mon - Sat",
+                        Text(text = selectedDays,
                             color = Color(0xFF2260FF),
                             fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
                             fontSize = 14.sp,
                             modifier = Modifier.align(Alignment.Center)
                         )
+
+                        if (showDaySelectionDialog) {
+                            DaySelectionDialog(
+                                onDismiss = { showDaySelectionDialog = false },
+                                onConfirm = { startDay, endDay ->
+                                    selectedDays = "$startDay - $endDay"
+                                    showDaySelectionDialog = false
+                                }
+                            )
+                        }
                     }
 
                 }
 
-                Spacer(modifier = Modifier.width(70.dp))
+                Spacer(modifier = Modifier.width(40.dp))
 
                 Column() {
                     Text(text = "Time",
@@ -494,32 +565,77 @@ fun HomePage_doctors(navHostController: NavHostController){
                     Box(
                         modifier = Modifier
                             .height(39.dp)
-                            .width(110.dp)
+                            .width(125.dp)
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(5.dp))
-                            .clickable {  }
+                            .clickable { showTimeSelectionDialog = true }
                             .background(color = Color(0xFFEAEFFF))
                             .drawBehind {
                                 drawRoundRect(color = Color.Blue, style = stroke)
                             }
                     ){
-                        Text(text = "9:00AM - 5:00PM",
+                        Text(text = selectedTime,
                             color = Color(0xFF2260FF),
                             fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
                             fontSize = 14.sp,
                             modifier = Modifier.align(Alignment.Center)
                         )
+
+                        if (showTimeSelectionDialog) {
+                            TimeSelectionDialog(
+                                onDismiss = { showTimeSelectionDialog = false },
+                                onConfirm = { startTime, endTime ->
+                                    selectedTime = "$startTime - $endTime"
+                                    showTimeSelectionDialog = false
+                                }
+                            )
+                        }
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            Button(onClick = {   },
+            Button(
+                onClick = {
+                    when {
+                        profile.text.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        experience.text.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        focus.text.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        about.text.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        career_path.text.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        Highlights.text.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        selectedDays.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        selectedTime.trim().isEmpty() -> {
+                            Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            // All fields are filled, proceed with saving
+                            saveDoctorInformation()
+                        }
+                    } },
                 colors = ButtonDefaults.buttonColors(button_Color.Blue),
-                modifier = Modifier.width(180.dp).height(45.dp).align(Alignment.CenterHorizontally)
-            ){
-                Text(text = "Proceed",
+                modifier = Modifier
+                    .width(180.dp)
+                    .height(45.dp)
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = "Proceed",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
                     fontSize = 24.sp
                 )

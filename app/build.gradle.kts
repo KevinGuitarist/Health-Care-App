@@ -53,6 +53,16 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.firebase:firebase-database-ktx")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("com.google.firebase:firebase-auth:22.0.0")
+    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("com.google.dagger:hilt-android:2.44")
+
+    implementation ("io.appwrite:sdk-for-android:4.0.0")
+
     implementation("com.google.firebase:firebase-auth:22.0.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("com.google.dagger:hilt-android:2.44")
