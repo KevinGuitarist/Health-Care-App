@@ -1,9 +1,9 @@
 plugins {
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -33,47 +33,70 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "19"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/license.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/notice.txt"
+            excludes += "/META-INF/ASL2.0"
+            excludes += "META-INF/MANIFEST.MF"
         }
     }
 }
 
 dependencies {
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation ("com.google.firebase:firebase-auth-ktx")
-    implementation ("com.google.firebase:firebase-database-ktx")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
-    implementation("com.google.firebase:firebase-auth:22.0.0")
-    implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation("com.google.dagger:hilt-android:2.44")
 
-    implementation ("io.appwrite:sdk-for-android:4.0.0")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.21")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
 
-    implementation("com.google.firebase:firebase-auth:22.0.0")
-    implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation("com.google.dagger:hilt-android:2.44")
+    // OkHttp dependencies
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Firebase dependencies
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+
+    // Hilt dependencies with KSP
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-android-compiler:2.48")
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    
+    // Coil for image loading
+    implementation(libs.coil.compose)
+
+    // Google Play Services
+    implementation(libs.play.services.auth)
+    
+    // AndroidX Core and Lifecycle
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v262)
     implementation(libs.androidx.runtime.livedata)
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation (platform("com.google.firebase:firebase-bom:31.0.0"))
-    implementation ("androidx.core:core-splashscreen:1.0.0-beta02")
-    implementation("com.facebook.android:facebook-login:latest.release")
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    
+    // Compose dependencies
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -81,15 +104,4 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.firebase.auth)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-}
-kapt {
-    correctErrorTypes = true
 }

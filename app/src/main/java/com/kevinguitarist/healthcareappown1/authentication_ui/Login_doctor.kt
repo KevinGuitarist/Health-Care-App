@@ -51,12 +51,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kevinguitarist.healthcareappown.ui.theme.button_Color
-import com.kevinguitarist.healthcareappown1.HomePage_doctors
 import com.kevinguitarist.healthcareappown1.HomeScreen
 import com.kevinguitarist.healthcareappown1.HomeScreenDoctor
 import com.kevinguitarist.healthcareappown1.R
 import com.kevinguitarist.healthcareappown1.SignUpDoctorScreen
-import com.kevinguitarist.healthcareappown1.SignUpScreen
 import com.kevinguitarist.healthcareappown1.WelcomeScreen
 import com.kevinguitarist.healthcareappown1.saveUserType
 

@@ -76,7 +76,7 @@ fun NavigationMain(){
         composable(HomeScreen.route) { HomePage(navController) }
         composable(LoginDoctorScreen.route) { Login_Doctor(navController) }
         composable(SignUpDoctorScreen.route) { signUp_doctor(navController) }
-        composable(HomeScreenDoctor.route) { HomePage_doctors(navController) }
+        composable(HomeScreenDoctor.route) { homescreenDoctors(navController, context) }
     }
 }
 
