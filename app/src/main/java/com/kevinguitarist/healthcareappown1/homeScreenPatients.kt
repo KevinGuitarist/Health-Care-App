@@ -3,6 +3,7 @@ package com.kevinguitarist.healthcareappown1
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -26,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -44,6 +49,18 @@ fun HomePage(navHostController: NavHostController) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
+    val specialistImages = listOf(
+        R.drawable.cardiologist,
+        R.drawable.dentistlogo,
+        R.drawable.dermatologist,
+        R.drawable.gynecologist,
+        R.drawable.neurologist,
+        R.drawable.ophthalmologist,
+        R.drawable.orthopedic,
+        R.drawable.pediatrician,
+        R.drawable.psychiatrist
+    )
+
     Column{
         Box(modifier = Modifier.padding(start = 32.dp, top = 41.dp)){
             Row() {
@@ -212,15 +229,58 @@ fun HomePage(navHostController: NavHostController) {
             )
         }
 
-        Spacer(modifier = Modifier.height(13.dp))
+        Spacer(modifier = Modifier.height(35.dp))
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(230.dp)
-            .background(Color(0xFFCAD6FF))
-            .width(360.dp)
-        ){
+        Column(modifier = Modifier.padding(start = 30.dp)) {
+            Text(
+                text = "Most Popular",
+                color = Color(0xFF000000),
+                fontFamily = FontFamily(Font(R.font.leaguespartan_medium))
+            )
 
+            Spacer(modifier = Modifier.height(17.dp))
+
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                items(specialistImages) { imageRes ->
+                    Image(
+                        painter = painterResource(id = imageRes),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(size = 90.dp)
+                            .clip(RoundedCornerShape(12.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(95.dp)
+                .clip(RoundedCornerShape(17.dp))
+                .background(Color(0xFFCAD6FF)))
+            {
+                /*
+                Image(
+                    painter = painterResource(id = R.drawable.your_image),  // Replace with your image resource
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .align(Alignment.CenterStart)
+                        .padding(start = 33.dp)
+                        .clip(CircleShape),  // Optional: if you want the image to be circular
+                    contentScale = ContentScale.Crop  // This will ensure the image fills the space properly
+                )
+
+                 */
+            }
         }
     }
 }
