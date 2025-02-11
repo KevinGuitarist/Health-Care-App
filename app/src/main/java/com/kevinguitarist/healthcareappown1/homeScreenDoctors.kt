@@ -49,7 +49,14 @@ import com.kevinguitarist.healthcareappown.ui.theme.button_Color
 import com.kevinguitarist.healthcareappown1.database.DoctorDatabaseManager
 import com.kevinguitarist.healthcareappown1.database.DoctorInformation
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 
 @Composable
 fun homescreenDoctors(navHostController: NavHostController, context: Context){
@@ -99,6 +106,12 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
     var showTimeSelectionDialog by remember { mutableStateOf(false) }
 
     var selectedTime by remember { mutableStateOf("9:00 AM - 5:00 PM") }
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let { selectedImageUri = it }
+    }
 
     fun saveDoctorInformation() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -205,7 +218,7 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
                     .height(39.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(5.dp))
-                    .clickable {  }
+                    .clickable { imagePickerLauncher.launch("image/*") }
                     .background(color = Color(0xFFEAEFFF))
                     .drawBehind {
                         drawRoundRect(color = Color.Blue, style = stroke)
@@ -251,6 +264,38 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
                         fontSize = 14.sp,
                         color = Color.Black,
                         modifier = Modifier.padding(top = 3.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(36.dp))
+
+            Box(
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFECF1FF))
+                    .align(Alignment.CenterHorizontally)
+                    .clickable { /* Image picker logic will go here */ },
+                contentAlignment = Alignment.Center
+            ) {
+                if (selectedImageUri != null) {
+                    AsyncImage(
+                        model = selectedImageUri,
+                        contentDescription = "Profile Picture",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = "Profile Picture",
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
                     )
                 }
             }
