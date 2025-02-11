@@ -57,6 +57,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
+import com.kevinguitarist.healthcareappown1.database.DoctorImageUploader
+import kotlinx.coroutines.launch
 
 @Composable
 fun homescreenDoctors(navHostController: NavHostController, context: Context){
@@ -113,6 +115,13 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
         uri?.let { selectedImageUri = it }
     }
 
+    val imageUploader = remember { DoctorImageUploader() }
+
+    // Initialize Cloudinary when the composable is first created
+    LaunchedEffect(Unit) {
+        imageUploader.initializeCloudinary(context)
+    }
+
     fun saveDoctorInformation() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId == null) {
@@ -120,28 +129,45 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
             return
         }
 
-        val doctorInfo = DoctorInformation(
-            profile = profile.text,
-            experience = experience.text,
-            focus = focus.text,
-            about = about.text,
-            careerPath = career_path.text,
-            highlights = Highlights.text,
-            workingDays = selectedDays,
-            workingHours = selectedTime,
-            userId = userId
-        )
+        scope.launch {
+            try {
+                // Upload image if one is selected
+                val imageUrlResult = selectedImageUri?.let { uri ->
+                    try {
+                        imageUploader.uploadImage(context, uri)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Failed to upload image: ${e.message}", Toast.LENGTH_SHORT).show()
+                        null
+                    }
+                }
 
-        doctorDatabaseManager.saveDoctorInformation(
-            doctorInfo = doctorInfo,
-            onSuccess = {
-                Toast.makeText(context, "Information saved successfully", Toast.LENGTH_SHORT).show()
-                // You can navigate to next screen here using navHostController if needed
-            },
-            onError = { errorMessage ->
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                // Create doctor info with the image URL
+                val doctorInfo = DoctorInformation(
+                    profile = profile.text,
+                    experience = experience.text,
+                    focus = focus.text,
+                    about = about.text,
+                    careerPath = career_path.text,
+                    highlights = Highlights.text,
+                    workingDays = selectedDays,
+                    workingHours = selectedTime,
+                    imageUrl = imageUrlResult ?: "",
+                    userId = userId
+                )
+
+                doctorDatabaseManager.saveDoctorInformation(
+                    doctorInfo = doctorInfo,
+                    onSuccess = {
+                        Toast.makeText(context, "Information saved successfully", Toast.LENGTH_SHORT).show()
+                    },
+                    onError = { errorMessage ->
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                )
+            } catch (e: Exception) {
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-        )
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize().padding(start = 30.dp, top = 75.dp, end = 30.dp, bottom = 32.dp).verticalScroll(scrollState)){
@@ -668,6 +694,10 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
                         selectedTime.trim().isEmpty() -> {
                             Toast.makeText(context, "Fill all the details to proceed", Toast.LENGTH_SHORT).show()
                         }
+                        selectedImageUri == null -> {
+                            Toast.makeText(context, "Please upload your profile picture", Toast.LENGTH_SHORT).show()
+                        }
+
                         else -> {
                             // All fields are filled, proceed with saving
                             saveDoctorInformation()

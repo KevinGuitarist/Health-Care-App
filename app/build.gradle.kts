@@ -63,6 +63,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.cloudinary:cloudinary-android:2.3.1")
 
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.21")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")

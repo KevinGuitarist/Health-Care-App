@@ -12,6 +12,7 @@ data class DoctorInformation(
     val highlights: String = "",
     val workingDays: String = "",
     val workingHours: String = "",
+    val imageUrl: String = "",
     val userId: String = "" // To uniquely identify each doctor
 )
 
