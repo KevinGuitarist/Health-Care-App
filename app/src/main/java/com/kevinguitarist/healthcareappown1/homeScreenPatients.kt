@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -35,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -66,15 +66,13 @@ fun HomePage(navHostController: NavHostController) {
             Row() {
                 imageUrl?.let {
                     Image(
-                        painter = rememberAsyncImagePainter(model = it),  // Use AsyncImagePainter to load image
+                        painter = rememberAsyncImagePainter(model = it),
                         contentDescription = "Google Account Image",
                         modifier = Modifier
-                            .size(40.dp)  // Set the size you prefer (40.dp is a good default size)
-                            .clip(CircleShape)  // Make it circular
-                            .background(Color.Gray)  // Background color
-                            .clickable {
-                                // Optional: Add action on clicking the image
-                            }
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(Color.Gray)
+                            .clickable { }
                     )
                 } ?: Icon(
                     painter = painterResource(R.drawable.user),  // Fallback icon if no image is found
@@ -100,11 +98,11 @@ fun HomePage(navHostController: NavHostController) {
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth() // Ensure the Box takes up the full width
-                        .padding(end = 30.dp) // Optional: Add padding if needed
+                        .fillMaxWidth()
+                        .padding(end = 30.dp)
                 ) {
                     Row(
-                        modifier = Modifier.align(Alignment.CenterEnd) // Align the Row to the end (right)
+                        modifier = Modifier.align(Alignment.CenterEnd)
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.notification),
@@ -263,23 +261,150 @@ fun HomePage(navHostController: NavHostController) {
         Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
             Box(modifier = Modifier
                 .fillMaxWidth()
-                .height(95.dp)
+                .height(105.dp)
                 .clip(RoundedCornerShape(17.dp))
                 .background(Color(0xFFCAD6FF)))
             {
-                /*
-                Image(
-                    painter = painterResource(id = R.drawable.your_image),  // Replace with your image resource
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .align(Alignment.CenterStart)
-                        .padding(start = 33.dp)
-                        .clip(CircleShape),  // Optional: if you want the image to be circular
-                    contentScale = ContentScale.Crop  // This will ensure the image fills the space properly
-                )
+                Row(modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(start = 13.dp)
+                            .size(85.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFECF1FF))
+                    ) {
+                        // You can add an image here later if needed
+                        // For now, it's just a circular box
+                    }
 
-                 */
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Column(
+                        modifier = Modifier.fillMaxHeight()
+                    ){
+                        Box(
+                            modifier = Modifier
+                                .width(211.dp)
+                                .height(50.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(Color(0xFFECF1FF))
+                        ){
+
+                        }
+
+                        Spacer(modifier = Modifier.height(7.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row {
+                                Box(modifier = Modifier
+                                    .width(60.dp)
+                                    .height(25.dp)
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .background(Color(0xFFECF1FF)),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.star),
+                                            contentDescription = "Rating",
+                                            modifier = Modifier
+                                                .padding(start = 5.dp)
+                                                .size(19.dp),
+                                            tint = Color(0xFF2260FF)
+                                        )
+
+                                        Spacer(modifier = Modifier.width(3.dp))
+
+                                        Text(
+                                            text = "-",
+                                            color = Color.Black,
+                                            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                                            fontSize = 16.sp,
+                                            modifier = Modifier.padding(top = 2.dp)
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.width(6.dp))
+
+                                Box(modifier = Modifier
+                                    .width(60.dp)
+                                    .height(25.dp)
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .background(Color(0xFFECF1FF)),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.message),
+                                            contentDescription = "Message",
+                                            modifier = Modifier
+                                                .padding(start = 5.dp)
+                                                .size(17.dp),
+                                            tint = Color(0xFF2260FF)
+                                        )
+
+                                        Spacer(modifier = Modifier.width(3.dp))
+
+                                        Text(
+                                            text = "-",
+                                            color = Color.Black,
+                                            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                                            fontSize = 16.sp,
+                                            modifier = Modifier.padding(top = 2.dp)
+                                        )
+                                    }
+                                }
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(end = 16.dp)  // Add padding to keep from edge
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(0xFFECF1FF)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.questionmarkicon),
+                                        contentDescription = "questionmark",
+                                        tint = Color.Unspecified
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(0xFFECF1FF)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.hearticon),
+                                        contentDescription = "Heart",
+                                        tint = Color.Unspecified
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
