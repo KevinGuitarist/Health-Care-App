@@ -1,5 +1,6 @@
 package com.kevinguitarist.healthcareappown1
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -316,19 +317,24 @@ fun DoctorCard(doctor: DoctorInformation) {
                 // Load doctor's image if available
                 if (!doctor.imageUrl.isNullOrEmpty()) {
                     val context = LocalContext.current
+
+                    Log.d("DoctorCard", "Image URL: ${doctor.imageUrl}") // Debugging line
+
                     Image(
                         painter = rememberAsyncImagePainter(
                             ImageRequest.Builder(context)
                                 .data(data = doctor.imageUrl)
                                 .apply(block = fun ImageRequest.Builder.() {
                                     crossfade(true)
-                                    error(R.drawable.user)
-                                    placeholder(R.drawable.user)
+                                    error(R.drawable.user) // Show this if the image fails to load
+                                    placeholder(R.drawable.user) // Show this while loading
                                 }).build()
                         ),
                         contentDescription = "Doctor Image",
-                        modifier = Modifier.size(85.dp).clip(CircleShape),
-                        contentScale = ContentScale.Crop
+                        modifier = Modifier
+                            .size(85.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop // Experiment with other ContentScale options
                     )
                 } else {
                     Icon(
@@ -357,7 +363,7 @@ fun DoctorCard(doctor: DoctorInformation) {
                             .padding(start = 14.dp, top = 9.dp)
                     ) {
                         Text(
-                            text = doctor.doctorName, // Use doctor's name from DoctorInformation
+                            text = "Dr. ${doctor.doctorName}", // Use doctor's name from DoctorInformation
                             color = Color(0xFF2260FF),
                             fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
                             fontSize = 14.sp,
