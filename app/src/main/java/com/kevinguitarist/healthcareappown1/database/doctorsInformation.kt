@@ -2,8 +2,12 @@ package com.kevinguitarist.healthcareappown1.database
 
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseError
 
 data class DoctorInformation(
+    val doctorName: String = "",
     val profile: String = "",
     val experience: String = "",
     val focus: String = "",
@@ -21,7 +25,6 @@ class DoctorDatabaseManager {
     private val doctorsRef: DatabaseReference = database.getReference("doctors")
 
     fun saveDoctorInformation(doctorInfo: DoctorInformation, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        // Create a new entry using the userId as the key
         val doctorRef = doctorsRef.child(doctorInfo.userId)
 
         doctorRef.setValue(doctorInfo)
@@ -33,15 +36,21 @@ class DoctorDatabaseManager {
             }
     }
 
-    fun getDoctorInformation(userId: String, onSuccess: (DoctorInformation?) -> Unit, onError: (String) -> Unit) {
-        doctorsRef.child(userId).get()
-            .addOnSuccessListener { snapshot ->
-                val doctorInfo = snapshot.getValue(DoctorInformation::class.java)
-                onSuccess(doctorInfo)
+    // Function to get all doctors
+    fun getAllDoctors(onSuccess: (List<DoctorInformation>) -> Unit, onError: (String) -> Unit) {
+        doctorsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val doctors = mutableListOf<DoctorInformation>()
+                for (doctorSnapshot in snapshot.children) {
+                    val doctorInfo = doctorSnapshot.getValue(DoctorInformation::class.java)
+                    doctorInfo?.let { doctors.add(it) }
+                }
+                onSuccess(doctors)
             }
-            .addOnFailureListener { exception ->
-                onError(exception.message ?: "Failed to retrieve doctor information")
-            }
-    }
 
+            override fun onCancelled(error: DatabaseError) {
+                onError(error.message ?: "Failed to retrieve doctor information")
+            }
+        })
+    }
 }

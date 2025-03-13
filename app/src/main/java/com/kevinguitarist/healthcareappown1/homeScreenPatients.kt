@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,25 +32,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.google.firebase.auth.FirebaseAuth
+import coil.request.ImageRequest
+import com.kevinguitarist.healthcareappown1.database.DoctorDatabaseManager
+import com.kevinguitarist.healthcareappown1.database.DoctorInformation
 
 @Composable
 fun HomePage(navHostController: NavHostController) {
-    val currentUser = FirebaseAuth.getInstance().currentUser
+    val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
     val imageUrl = currentUser?.photoUrl
     val displayName = currentUser?.displayName
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver){
         mutableStateOf(TextFieldValue(""))
     }
+
     val specialistImages = listOf(
         R.drawable.cardiologist,
         R.drawable.dentistlogo,
@@ -60,6 +66,23 @@ fun HomePage(navHostController: NavHostController) {
         R.drawable.pediatrician,
         R.drawable.psychiatrist
     )
+
+    // State to hold the list of doctors
+    var doctorsList by rememberSaveable { mutableStateOf<List<DoctorInformation>>(emptyList()) }
+
+    // Fetch doctors data from Firebase
+    LaunchedEffect(key1 = true) {  // This ensures it only runs once
+        val doctorDatabaseManager = DoctorDatabaseManager()
+        doctorDatabaseManager.getAllDoctors(
+            onSuccess = { doctors ->
+                doctorsList = doctors
+            },
+            onError = { errorMessage ->
+                println("Error fetching doctors: $errorMessage")
+            }
+        )
+    }
+
 
     Column{
         Box(modifier = Modifier.padding(start = 32.dp, top = 41.dp)){
@@ -153,7 +176,7 @@ fun HomePage(navHostController: NavHostController) {
             )
 
             Spacer(modifier = Modifier.width(12.dp))
-            
+
             BasicTextField(
                 value = text,
                 onValueChange = { text = it },
@@ -258,150 +281,202 @@ fun HomePage(navHostController: NavHostController) {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(105.dp)
-                .clip(RoundedCornerShape(17.dp))
-                .background(Color(0xFFCAD6FF)))
-            {
-                Row(modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 13.dp)
-                            .size(85.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFECF1FF))
-                    ) {
-                        // You can add an image here later if needed
-                        // For now, it's just a circular box
-                    }
+        LazyColumn(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
+            items(doctorsList) { doctor ->
+                DoctorCard(doctor = doctor)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+}
 
-                    Spacer(modifier = Modifier.width(10.dp))
+@Composable
+fun DoctorCard(doctor: DoctorInformation) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(105.dp)
+            .clip(RoundedCornerShape(17.dp))
+            .background(Color(0xFFCAD6FF))
+    )
+    {
+        Row(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(start = 13.dp)
+                    .size(85.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFECF1FF))
+            ) {
+                // Load doctor's image if available
+                if (!doctor.imageUrl.isNullOrEmpty()) {
+                    val context = LocalContext.current
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            ImageRequest.Builder(context)
+                                .data(data = doctor.imageUrl)
+                                .apply(block = fun ImageRequest.Builder.() {
+                                    crossfade(true)
+                                    error(R.drawable.user)
+                                    placeholder(R.drawable.user)
+                                }).build()
+                        ),
+                        contentDescription = "Doctor Image",
+                        modifier = Modifier.size(85.dp).clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = "Default Doctor Icon",
+                        modifier = Modifier.size(85.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
 
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Column(
+                modifier = Modifier.fillMaxHeight()
+            ){
+                Box(
+                    modifier = Modifier
+                        .width(211.dp)
+                        .height(50.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(0xFFECF1FF))
+                ){
                     Column(
-                        modifier = Modifier.fillMaxHeight()
-                    ){
-                        Box(
-                            modifier = Modifier
-                                .width(211.dp)
-                                .height(50.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(Color(0xFFECF1FF))
-                        ){
+                        modifier = Modifier
+                            .padding(start = 14.dp, top = 9.dp)
+                    ) {
+                        Text(
+                            text = doctor.doctorName, // Use doctor's name from DoctorInformation
+                            color = Color(0xFF2260FF),
+                            fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
+                            fontSize = 14.sp,
+                            style = TextStyle(lineHeight = 3.sp)
+                        )
 
+                        Text(
+                            text = doctor.profile, // Use doctor's specialization from DoctorInformation
+                            color = Color.Black,
+                            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(7.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row {
+                        Box(modifier = Modifier
+                            .width(60.dp)
+                            .height(25.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(0xFFECF1FF)),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.star),
+                                    contentDescription = "Rating",
+                                    modifier = Modifier
+                                        .padding(start = 5.dp)
+                                        .size(19.dp),
+                                    tint = Color(0xFF2260FF)
+                                )
+
+                                Spacer(modifier = Modifier.width(3.dp))
+
+                                Text(
+                                    text = "-",
+                                    color = Color.Black,
+                                    fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(top = 2.dp)
+                                )
+                            }
                         }
 
-                        Spacer(modifier = Modifier.height(7.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                        Box(modifier = Modifier
+                            .width(60.dp)
+                            .height(25.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(0xFFECF1FF)),
+                            contentAlignment = Alignment.CenterStart
                         ) {
-                            Row {
-                                Box(modifier = Modifier
-                                    .width(60.dp)
-                                    .height(25.dp)
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .background(Color(0xFFECF1FF)),
-                                    contentAlignment = Alignment.CenterStart
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.star),
-                                            contentDescription = "Rating",
-                                            modifier = Modifier
-                                                .padding(start = 5.dp)
-                                                .size(19.dp),
-                                            tint = Color(0xFF2260FF)
-                                        )
-
-                                        Spacer(modifier = Modifier.width(3.dp))
-
-                                        Text(
-                                            text = "-",
-                                            color = Color.Black,
-                                            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
-                                            fontSize = 16.sp,
-                                            modifier = Modifier.padding(top = 2.dp)
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.width(6.dp))
-
-                                Box(modifier = Modifier
-                                    .width(60.dp)
-                                    .height(25.dp)
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .background(Color(0xFFECF1FF)),
-                                    contentAlignment = Alignment.CenterStart
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.message),
-                                            contentDescription = "Message",
-                                            modifier = Modifier
-                                                .padding(start = 5.dp)
-                                                .size(17.dp),
-                                            tint = Color(0xFF2260FF)
-                                        )
-
-                                        Spacer(modifier = Modifier.width(3.dp))
-
-                                        Text(
-                                            text = "-",
-                                            color = Color.Black,
-                                            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
-                                            fontSize = 16.sp,
-                                            modifier = Modifier.padding(top = 2.dp)
-                                        )
-                                    }
-                                }
-                            }
-
                             Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(end = 16.dp)  // Add padding to keep from edge
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
+                                Icon(
+                                    painter = painterResource(id = R.drawable.message),
+                                    contentDescription = "Message",
                                     modifier = Modifier
-                                        .size(24.dp)
-                                        .clip(CircleShape)
-                                        .background(Color(0xFFECF1FF)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.questionmarkicon),
-                                        contentDescription = "questionmark",
-                                        tint = Color.Unspecified
-                                    )
-                                }
+                                        .padding(start = 5.dp)
+                                        .size(17.dp),
+                                    tint = Color(0xFF2260FF)
+                                )
 
-                                Spacer(modifier = Modifier.width(5.dp))
+                                Spacer(modifier = Modifier.width(3.dp))
 
-                                Box(
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                        .clip(CircleShape)
-                                        .background(Color(0xFFECF1FF)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.hearticon),
-                                        contentDescription = "Heart",
-                                        tint = Color.Unspecified
-                                    )
-                                }
+                                Text(
+                                    text = "-",
+                                    color = Color.Black,
+                                    fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(top = 2.dp)
+                                )
                             }
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(end = 16.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFECF1FF)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.questionmarkicon),
+                                contentDescription = "questionmark",
+                                tint = Color.Unspecified
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(5.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFECF1FF)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.hearticon),
+                                contentDescription = "Heart",
+                                tint = Color.Unspecified
+                            )
                         }
                     }
                 }

@@ -157,6 +157,7 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
                 }
 
                 val doctorInfo = DoctorInformation(
+                    doctorName = doctorName,
                     profile = profile.text,
                     experience = experience.text,
                     focus = focus.text,
@@ -166,7 +167,7 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
                     workingDays = selectedDays,
                     workingHours = selectedTime,
                     imageUrl = imageUrlResult ?: "",
-                    userId = userId
+                    userId = userId // The user id that exists in firebaseAuth (this will be very long, e.g. "APUK15ff1eYkURvCfbLhcsEGpLL2")
                 )
 
                 doctorDatabaseManager.saveDoctorInformation(
