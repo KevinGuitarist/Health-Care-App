@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -84,208 +86,268 @@ fun HomePage(navHostController: NavHostController) {
         )
     }
 
+    // State for bottom navigation
+    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
-    Column{
-        Box(modifier = Modifier.padding(start = 32.dp, top = 41.dp)){
-            Row() {
-                imageUrl?.let {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = it),
-                        contentDescription = "Google Account Image",
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(Color.Gray)
-                            .clickable { }
-                    )
-                } ?: Icon(
-                    painter = painterResource(R.drawable.user),  // Fallback icon if no image is found
-                    contentDescription = "Default Profile Icon",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(Color.Gray)
-                )
+    val items = listOf(
+        R.drawable.home,
+        R.drawable.messages,
+        R.drawable.profile,
+        R.drawable.calender
+    )
 
-                Spacer(modifier = Modifier.width(10.dp))
-
-                Column() {
-                    Text("Hi, WelcomeBack",
-                        color = Color(0xFF2260FF),
-                        fontFamily = FontFamily(Font(R.font.leaguespartan_light))
-                    )
-                    Text(text = displayName ?: "User",
-                        color = Color.Black,
-                        fontFamily = FontFamily(Font(R.font.leaguespartan_regular))
-                    )
-                }
-
-                Box(
+    Scaffold(
+        bottomBar = {
+            Surface(
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 3.dp
+            ) {
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 30.dp)
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier.align(Alignment.CenterEnd)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.notification),
-                            contentDescription = "notification",
-                            modifier = Modifier
-                                .clickable {  }
-                                .size(35.dp),
-                            tint = Color.Unspecified
-                        )
+                    items.forEachIndexed { index, item ->
+                        val isSelected = index == selectedItem
+                        val backgroundColor =
+                            if (isSelected) Color(0xFF2260FF) else Color.Transparent
+                        val contentColor = if (isSelected) Color.White else Color(0xFF2260FF)
 
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        Icon(
-                            painter = painterResource(R.drawable.settings),
-                            contentDescription = "settings",
+                        Row(
                             modifier = Modifier
-                                .clickable {  }
-                                .size(35.dp),
-                            tint = Color.Unspecified
-                        )
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(backgroundColor)
+                                .clickable { selectedItem = index }
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = item),
+                                contentDescription = null,
+                                tint = contentColor
+                            )
+                        }
                     }
                 }
             }
         }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            // Your existing UI code goes here:
+            Box(modifier = Modifier.padding(start = 32.dp, top = 41.dp)) {
+                Row() {
+                    imageUrl?.let {
+                        Image(
+                            painter = rememberAsyncImagePainter(model = it),
+                            contentDescription = "Google Account Image",
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(Color.Gray)
+                                .clickable { }
+                        )
+                    } ?: Icon(
+                        painter = painterResource(R.drawable.user),  // Fallback icon if no image is found
+                        contentDescription = "Default Profile Icon",
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(Color.Gray)
+                    )
 
-        Spacer(modifier = Modifier.height(22.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
 
-        Row(modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 31.dp)){
+                    Column() {
+                        Text(
+                            "Hi, WelcomeBack",
+                            color = Color(0xFF2260FF),
+                            fontFamily = FontFamily(Font(R.font.leaguespartan_light))
+                        )
+                        Text(
+                            text = displayName ?: "User",
+                            color = Color.Black,
+                            fontFamily = FontFamily(Font(R.font.leaguespartan_regular))
+                        )
+                    }
 
-            Icon(
-                painter = painterResource(R.drawable.doctors),
-                contentDescription = "doctors",
-                modifier = Modifier
-                    .clickable {  }
-                    .size(40.dp),
-                tint = Color.Unspecified
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Icon(
-                painter = painterResource(R.drawable.favorite),
-                contentDescription = "favourite",
-                modifier = Modifier
-                    .clickable {  }
-                    .size(44.dp),
-                tint = Color.Unspecified
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            BasicTextField(
-                value = text,
-                onValueChange = { text = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(36.dp)
-                    .background(
-                        Color(0xFFCAD6FF),
-                        RoundedCornerShape(23.dp)
-                    ),
-                maxLines = 1,
-                decorationBox = { innerTextField ->
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(top = 1.dp, start = 1.dp, bottom = 1.dp)
+                            .padding(end = 30.dp)
                     ) {
                         Row(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth()
-                                .padding(top = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically // Ensures vertical centering
+                            modifier = Modifier.align(Alignment.CenterEnd)
                         ) {
-                            // Left-side icon
                             Icon(
-                                painter = painterResource(id = R.drawable.adjust),
-                                contentDescription = "adjust",
+                                painter = painterResource(R.drawable.notification),
+                                contentDescription = "notification",
                                 modifier = Modifier
-                                    .padding(start = 3.dp, bottom = 4.dp)
-                                    .size(26.dp),
+                                    .clickable { }
+                                    .size(35.dp),
                                 tint = Color.Unspecified
                             )
 
-                            Spacer(modifier = Modifier.width(5.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
 
-                            // Text field in the middle
-                            Box(
-                                modifier = Modifier
-                                    .padding(bottom = 4.dp)
-                                    .weight(1f) // This takes up the remaining space between the icons
-                                    .fillMaxHeight(),
-                                contentAlignment = Alignment.CenterStart
-                            ) {
-                                if (text.text.isEmpty()) {
-                                    Text(
-                                        text = " ", // Placeholder text
-                                        fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
-                                        fontSize = 16.sp,
-                                        color = Color.Gray
-                                    )
-                                }
-                                innerTextField()
-                            }
-
-                            Spacer(modifier = Modifier.width(5.dp)) // Optional spacing before the right icon
-
-                            // Right-side search icon
                             Icon(
-                                painter = painterResource(id = R.drawable.search),
-                                contentDescription = "search",
+                                painter = painterResource(R.drawable.settings),
+                                contentDescription = "settings",
                                 modifier = Modifier
-                                    .padding(end = 6.dp, bottom = 3.dp) // Padding for right-side alignment
-                                    .size(23.dp),
+                                    .clickable { }
+                                    .size(35.dp),
                                 tint = Color.Unspecified
                             )
                         }
                     }
                 }
-            )
-        }
+            }
 
-        Spacer(modifier = Modifier.height(35.dp))
+            Spacer(modifier = Modifier.height(22.dp))
 
-        Column(modifier = Modifier.padding(start = 30.dp)) {
-            Text(
-                text = "Most Popular",
-                color = Color(0xFF000000),
-                fontFamily = FontFamily(Font(R.font.leaguespartan_medium))
-            )
-
-            Spacer(modifier = Modifier.height(17.dp))
-
-            LazyRow(
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
+                    .fillMaxWidth()
+                    .padding(start = 30.dp, end = 31.dp)
             ) {
-                items(specialistImages) { imageRes ->
-                    Image(
-                        painter = painterResource(id = imageRes),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(size = 90.dp)
-                            .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
-                    )
+
+                Icon(
+                    painter = painterResource(R.drawable.doctors),
+                    contentDescription = "doctors",
+                    modifier = Modifier
+                        .clickable { }
+                        .size(40.dp),
+                    tint = Color.Unspecified
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Icon(
+                    painter = painterResource(R.drawable.favorite),
+                    contentDescription = "favourite",
+                    modifier = Modifier
+                        .clickable { }
+                        .size(44.dp),
+                    tint = Color.Unspecified
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                BasicTextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(36.dp)
+                        .background(
+                            Color(0xFFCAD6FF),
+                            RoundedCornerShape(23.dp)
+                        ),
+                    maxLines = 1,
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                                .padding(top = 1.dp, start = 1.dp, bottom = 1.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .fillMaxWidth()
+                                    .padding(top = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically // Ensures vertical centering
+                            ) {
+                                // Left-side icon
+                                Icon(
+                                    painter = painterResource(id = R.drawable.adjust),
+                                    contentDescription = "adjust",
+                                    modifier = Modifier
+                                        .padding(start = 3.dp, bottom = 4.dp)
+                                        .size(26.dp),
+                                    tint = Color.Unspecified
+                                )
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                // Text field in the middle
+                                Box(
+                                    modifier = Modifier
+                                        .padding(bottom = 4.dp)
+                                        .weight(1f) // This takes up the remaining space between the icons
+                                        .fillMaxHeight(),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    if (text.text.isEmpty()) {
+                                        Text(
+                                            text = " ", // Placeholder text
+                                            fontFamily = FontFamily(Font(R.font.leaguespartan_regular)),
+                                            fontSize = 16.sp,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                    innerTextField()
+                                }
+
+                                Spacer(modifier = Modifier.width(5.dp)) // Optional spacing before the right icon
+
+                                // Right-side search icon
+                                Icon(
+                                    painter = painterResource(id = R.drawable.search),
+                                    contentDescription = "search",
+                                    modifier = Modifier
+                                        .padding(end = 6.dp, bottom = 3.dp) // Padding for right-side alignment
+                                        .size(23.dp),
+                                    tint = Color.Unspecified
+                                )
+                            }
+                        }
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(35.dp))
+
+            Column(modifier = Modifier.padding(start = 30.dp)) {
+                Text(
+                    text = "Most Popular",
+                    color = Color(0xFF000000),
+                    fontFamily = FontFamily(Font(R.font.leaguespartan_medium))
+                )
+
+                Spacer(modifier = Modifier.height(17.dp))
+
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp)
+                ) {
+                    items(specialistImages) { imageRes ->
+                        Image(
+                            painter = painterResource(id = imageRes),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(size = 90.dp)
+                                .clip(RoundedCornerShape(12.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-        LazyColumn(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
-            items(doctorsList) { doctor ->
-                DoctorCard(doctor = doctor)
-                Spacer(modifier = Modifier.height(8.dp))
+            LazyColumn(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
+                items(doctorsList) { doctor ->
+                    DoctorCard(doctor = doctor)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
             }
         }
     }
