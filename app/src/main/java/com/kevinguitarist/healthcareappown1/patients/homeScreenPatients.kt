@@ -1,4 +1,4 @@
-package com.kevinguitarist.healthcareappown1
+package com.kevinguitarist.healthcareappown1.patients
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.kevinguitarist.healthcareappown1.R
 import com.kevinguitarist.healthcareappown1.database.DoctorDatabaseManager
 import com.kevinguitarist.healthcareappown1.database.DoctorInformation
 

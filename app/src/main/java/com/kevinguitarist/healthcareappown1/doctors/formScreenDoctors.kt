@@ -1,4 +1,4 @@
-package com.kevinguitarist.healthcareappown1
+package com.kevinguitarist.healthcareappown1.doctors
 
 import android.content.Context
 import android.widget.Toast
@@ -61,9 +61,11 @@ import coil.compose.AsyncImage
 import com.kevinguitarist.healthcareappown1.database.DoctorImageUploader
 import kotlinx.coroutines.launch
 import androidx.compose.ui.window.Dialog
+import com.kevinguitarist.healthcareappown1.HomeScreenDoctor
+import com.kevinguitarist.healthcareappown1.R
 
 @Composable
-fun homescreenDoctors(navHostController: NavHostController, context: Context){
+fun formscreenDoctors(navHostController: NavHostController, context: Context){
     var doctorName by remember { mutableStateOf("XYZ") }
     val doctorDatabaseManager = remember { DoctorDatabaseManager() }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -723,6 +725,7 @@ fun homescreenDoctors(navHostController: NavHostController, context: Context){
 
                             else -> {
                                 saveDoctorInformation()
+                                navHostController.navigate(HomeScreenDoctor.route)
                             }
                         } },
                     colors = ButtonDefaults.buttonColors(button_Color.Blue),

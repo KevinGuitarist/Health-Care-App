@@ -17,6 +17,9 @@ import com.kevinguitarist.healthcareappown1.authentication_ui.Login_Doctor
 import com.kevinguitarist.healthcareappown1.authentication_ui.loginScreen
 import com.kevinguitarist.healthcareappown1.authentication_ui.signUp
 import com.kevinguitarist.healthcareappown1.authentication_ui.signUp_doctor
+import com.kevinguitarist.healthcareappown1.doctors.formscreenDoctors
+import com.kevinguitarist.healthcareappown1.doctors.homeScreenDoctors
+import com.kevinguitarist.healthcareappown1.patients.HomePage
 import com.kevinguitarist.healthcareappown1.ui.theme.HealthCareAppOwn1Theme
 
 class MainActivity : ComponentActivity() {
@@ -76,7 +79,8 @@ fun NavigationMain(){
         composable(HomeScreen.route) { HomePage(navController) }
         composable(LoginDoctorScreen.route) { Login_Doctor(navController) }
         composable(SignUpDoctorScreen.route) { signUp_doctor(navController) }
-        composable(HomeScreenDoctor.route) { homescreenDoctors(navController, context) }
+        composable(FormScreenDoctor.route) { formscreenDoctors(navController, context) }
+        composable(HomeScreenDoctor.route) { homeScreenDoctors(navController) }
     }
 }
 
