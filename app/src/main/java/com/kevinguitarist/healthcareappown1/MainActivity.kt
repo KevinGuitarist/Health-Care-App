@@ -46,11 +46,10 @@ fun NavigationMain(){
             if (task.isSuccessful && currentUser != null) {
                 val userType = getUserType(context)
                 if (userType == "doctor") {
-                    // Check if form is completed
                     val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
-                    val isFormCompleted = sharedPreferences.getBoolean("formCompleted", false)
+                    val isFormFilled = sharedPreferences.getBoolean("isFormFilled", false)
                     
-                    if (isFormCompleted) {
+                    if (isFormFilled) {
                         navController.navigate(HomeScreenDoctor.route) {
                             popUpTo(0) { inclusive = true }
                             launchSingleTop = true

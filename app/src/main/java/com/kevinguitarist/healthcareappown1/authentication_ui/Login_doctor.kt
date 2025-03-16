@@ -1,5 +1,6 @@
 package com.kevinguitarist.healthcareappown1.authentication_ui
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -88,10 +89,15 @@ fun Login_Doctor(navHostController: NavHostController) {
                             Log.d("TAG", "signInWithCredential:success")
                             val user = FirebaseAuth.getInstance().currentUser
                             Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
-                            saveUserType(context, "doctor")                                        // Save user type as "doctor"
+                            saveUserType(context, "doctor")
+                            // Make sure form is marked as not filled for new login
+                            context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                                .edit()
+                                .putBoolean("isFormFilled", false)
+                                .apply()
                             navHostController.navigate(FormScreenDoctor.route) {
                                 popUpTo(0) {
-                                    inclusive = true // Clear backstack including start destination
+                                    inclusive = true
                                 }
                                 launchSingleTop = true
                             }
