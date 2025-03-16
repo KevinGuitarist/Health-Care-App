@@ -46,9 +46,20 @@ fun NavigationMain(){
             if (task.isSuccessful && currentUser != null) {
                 val userType = getUserType(context)
                 if (userType == "doctor") {
-                    navController.navigate(FormScreenDoctor.route) {
-                        popUpTo(0) { inclusive = true }
-                        launchSingleTop = true
+                    // Check if form is completed
+                    val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                    val isFormCompleted = sharedPreferences.getBoolean("formCompleted", false)
+                    
+                    if (isFormCompleted) {
+                        navController.navigate(HomeScreenDoctor.route) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    } else {
+                        navController.navigate(FormScreenDoctor.route) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
                 } else {
                     navController.navigate(HomeScreen.route) {
@@ -61,13 +72,6 @@ fun NavigationMain(){
                     popUpTo(0) { inclusive = true }
                     launchSingleTop = true
                 }
-            }
-        } ?: run {
-            navController.navigate(WelcomeScreen.route) {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
-                }
-                launchSingleTop = true
             }
         }
     }

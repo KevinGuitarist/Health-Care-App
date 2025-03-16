@@ -177,6 +177,14 @@ fun formscreenDoctors(navHostController: NavHostController, context: Context){
                     onSuccess = {
                         isLoading = false
                         Toast.makeText(context, "Information saved successfully", Toast.LENGTH_SHORT).show()
+                        // Save a flag indicating form is completed
+                        val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putBoolean("formCompleted", true).apply()
+                        // Navigate to home screen and clear backstack
+                        navHostController.navigate(HomeScreenDoctor.route) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     },
                     onError = { errorMessage ->
                         isLoading = false
