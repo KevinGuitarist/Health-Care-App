@@ -725,7 +725,6 @@ fun formscreenDoctors(navHostController: NavHostController, context: Context){
 
                             else -> {
                                 saveDoctorInformation()
-                                navHostController.navigate(HomeScreenDoctor.route)
                             }
                         } },
                     colors = ButtonDefaults.buttonColors(button_Color.Blue),

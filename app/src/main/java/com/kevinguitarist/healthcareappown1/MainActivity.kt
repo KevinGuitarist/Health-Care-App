@@ -46,7 +46,7 @@ fun NavigationMain(){
             if (task.isSuccessful && currentUser != null) {
                 val userType = getUserType(context)
                 if (userType == "doctor") {
-                    navController.navigate(HomeScreenDoctor.route) {
+                    navController.navigate(FormScreenDoctor.route) {
                         popUpTo(0) { inclusive = true }
                         launchSingleTop = true
                     }

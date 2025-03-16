@@ -51,6 +51,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kevinguitarist.healthcareappown.ui.theme.button_Color
+import com.kevinguitarist.healthcareappown1.FormScreenDoctor
 import com.kevinguitarist.healthcareappown1.HomeScreen
 import com.kevinguitarist.healthcareappown1.HomeScreenDoctor
 import com.kevinguitarist.healthcareappown1.R
@@ -88,7 +89,7 @@ fun Login_Doctor(navHostController: NavHostController) {
                             val user = FirebaseAuth.getInstance().currentUser
                             Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
                             saveUserType(context, "doctor")                                        // Save user type as "doctor"
-                            navHostController.navigate(HomeScreenDoctor.route) {
+                            navHostController.navigate(FormScreenDoctor.route) {
                                 popUpTo(0) {
                                     inclusive = true // Clear backstack including start destination
                                 }
