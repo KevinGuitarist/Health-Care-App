@@ -90,16 +90,26 @@ fun Login_Doctor(navHostController: NavHostController) {
                             val user = FirebaseAuth.getInstance().currentUser
                             Toast.makeText(context, "Logged in Successfully", Toast.LENGTH_SHORT).show()
                             saveUserType(context, "doctor")
-                            // Make sure form is marked as not filled for new login
-                            context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
-                                .edit()
-                                .putBoolean("isFormFilled", false)
-                                .apply()
-                            navHostController.navigate(FormScreenDoctor.route) {
-                                popUpTo(0) {
-                                    inclusive = true
+
+                            // Check if this user has previously filled the form
+                            val sharedPreferences = context.getSharedPreferences("DoctorPrefs", Context.MODE_PRIVATE)
+                            val userId = user?.uid
+                            val hasFilledForm = sharedPreferences.getBoolean("form_$userId", false)
+
+                            if (hasFilledForm) {
+                                // User has previously filled the form
+                                sharedPreferences.edit().putBoolean("isFormFilled", true).apply()
+                                navHostController.navigate(HomeScreenDoctor.route) {
+                                    popUpTo(0) { inclusive = true }
+                                    launchSingleTop = true
                                 }
-                                launchSingleTop = true
+                            } else {
+                                // First time login or form not filled
+                                sharedPreferences.edit().putBoolean("isFormFilled", false).apply()
+                                navHostController.navigate(FormScreenDoctor.route) {
+                                    popUpTo(0) { inclusive = true }
+                                    launchSingleTop = true
+                                }
                             }
                         }
                         else {
@@ -107,7 +117,6 @@ fun Login_Doctor(navHostController: NavHostController) {
                             Log.w("TAG", "signInWithCredential:failure", task.exception)
                             Toast.makeText(context, "Authentication Failed.", Toast.LENGTH_SHORT).show()
                         }
-
                     }
             }
             catch (e: ApiException) {
