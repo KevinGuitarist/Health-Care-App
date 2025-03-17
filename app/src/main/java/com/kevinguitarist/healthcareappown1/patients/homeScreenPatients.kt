@@ -346,7 +346,7 @@ fun HomePage(navHostController: NavHostController) {
 
             LazyColumn(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
                 items(doctorsList) { doctor ->
-                    DoctorCard(doctor = doctor)
+                    DoctorCard(doctor = doctor, navController = navHostController)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
@@ -355,19 +355,22 @@ fun HomePage(navHostController: NavHostController) {
 }
 
 @Composable
-fun DoctorCard(doctor: DoctorInformation) {
+fun DoctorCard(doctor: DoctorInformation, navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(105.dp)
             .clip(RoundedCornerShape(17.dp))
             .background(Color(0xFFCAD6FF))
-    )
-    {
+            .clickable {
+                // Navigate to DoctorsInformationUI with doctor's ID
+                navController.navigate("doctorInfo/${doctor.userId}")
+            }
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(vertical = 10.dp),
+                .padding(top = 10.dp, bottom = 10.dp, end = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -516,7 +519,7 @@ fun DoctorCard(doctor: DoctorInformation) {
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(end = 16.dp)
+                        modifier = Modifier.padding(end = 5.dp)
                     ) {
                         Box(
                             modifier = Modifier

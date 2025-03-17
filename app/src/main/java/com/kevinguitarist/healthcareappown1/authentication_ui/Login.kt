@@ -112,7 +112,7 @@ fun loginScreen(navHostController: NavHostController) {
         Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 120.dp)){
+                Box(modifier = Modifier.fillMaxWidth().wrapContentSize(align = Alignment.Center)){
                     Text(text = "Log In",
                         fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
                         fontSize = 24.sp,

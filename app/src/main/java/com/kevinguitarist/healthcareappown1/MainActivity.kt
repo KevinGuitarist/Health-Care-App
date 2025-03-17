@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.kevinguitarist.healthcareappown1.authentication_ui.Login_Doctor
 import com.kevinguitarist.healthcareappown1.authentication_ui.loginScreen
@@ -21,6 +23,7 @@ import com.kevinguitarist.healthcareappown1.doctors.formscreenDoctors
 import com.kevinguitarist.healthcareappown1.doctors.homeScreenDoctors
 import com.kevinguitarist.healthcareappown1.patients.HomePage
 import com.kevinguitarist.healthcareappown1.ui.theme.HealthCareAppOwn1Theme
+import com.kevinguitarist.healthcareappown1.patients.DoctorsInformationUI
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +87,13 @@ fun NavigationMain(){
         composable(SignUpDoctorScreen.route) { signUp_doctor(navController) }
         composable(FormScreenDoctor.route) { formscreenDoctors(navController, context) }
         composable(HomeScreenDoctor.route) { homeScreenDoctors(navController) }
+        composable(
+            route = "doctorInfo/{doctorId}",
+            arguments = listOf(navArgument("doctorId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val doctorId = backStackEntry.arguments?.getString("doctorId")
+            DoctorsInformationUI(navHostController = navController)
+        }
     }
 }
 
