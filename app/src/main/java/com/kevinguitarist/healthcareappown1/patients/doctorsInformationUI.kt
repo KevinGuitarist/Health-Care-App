@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
 import androidx.compose.material3.Button
@@ -135,7 +137,8 @@ fun DoctorsInformationUI(navHostController: NavHostController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp),
+                    .padding(horizontal = 30.dp)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
@@ -143,7 +146,6 @@ fun DoctorsInformationUI(navHostController: NavHostController) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp)
                         .clip(RoundedCornerShape(17.dp))
                         .background(Color(0xFFCAD6FF)),
                     contentAlignment = Alignment.Center
@@ -228,77 +230,278 @@ fun DoctorsInformationUI(navHostController: NavHostController) {
                                     }
                                 }
 
-                                Spacer(modifier = Modifier.height(5.dp))
+                                Spacer(modifier = Modifier.height(10.dp))
 
-                                Box(modifier = Modifier.fillMaxWidth().background(color = Color(0xFF2260FF),
-                                    shape = RoundedCornerShape(10.dp))
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color = Color(0xFF2260FF),
+                                            shape = RoundedCornerShape(20.dp)
+                                        ),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(10.dp)
+                                    ) {
+                                        Text(
+                                            text = "Focus:",
+                                            fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White,
+                                            textAlign = TextAlign.Start
+                                        )
+
+                                        Text(
+                                            text = "The impact of hormonal imbalances on skin conditions, specializing in acne, hirsutism, and other skin disorders.",
+                                            fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                                            color = Color.White,
+                                            textAlign = TextAlign.Start,
+                                            modifier = Modifier.padding(top = 2.dp),
+                                            fontSize = 14.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 21.dp, end = 21.dp)
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(30.dp)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "Dr. Alexander Bennett, Ph.D.",
+                                    color = Color(0xFF2260FF),
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    textAlign = TextAlign.Center
+                                )
+
+                                Text(
+                                    text = "Dermato-Genetics",
+                                    color = Color.Gray, // Set text color to gray
+                                    fontSize = 14.sp, // Adjust font size
+                                    textAlign = TextAlign.Center, //Set textAlign
+                                    //fontFamily = FontFamily(Font(R.font.your_font)) //Set Font Family
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 21.dp, end = 21.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(end = 10.dp)
+                                        .background(
+                                            color = Color.White,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .height(25.dp)
+                                        .width(50.dp),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.star),
+                                            contentDescription = "Rating",
+                                            tint = Color(0xFF2260FF),
+                                            modifier = Modifier.size(20.dp).padding(start = 5.dp)
+                                        )
+
+                                        Spacer(modifier = Modifier.width(5.dp))
+
+                                        Text(
+                                            text = "-",
+                                            fontSize = 18.sp,
+                                            color = Color(0xFF000000)
+                                        )
+                                    }
+                                }
+
+                                Box(
+                                    modifier = Modifier
+                                        .padding(end = 10.dp)
+                                        .background(
+                                            color = Color.White,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .height(25.dp)
+                                        .width(50.dp),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.message),
+                                            contentDescription = "Comments",
+                                            tint = Color(0xFF2260FF),
+                                            modifier = Modifier.size(20.dp).padding(start = 5.dp)
+                                        )
+
+                                        Spacer(modifier = Modifier.width(5.dp))
+
+                                        Text(
+                                            text = "-",
+                                            fontSize = 18.sp,
+                                            color = Color(0xFF000000)
+                                        )
+                                    }
+                                }
+
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color = Color.White,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .height(50.dp),
+                                    contentAlignment = Alignment.CenterStart
                                 ){
+                                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.clock),
+                                            contentDescription = "Availability",
+                                            tint = Color(0xFF2260FF),
+                                            modifier = Modifier.size(20.dp).padding(start = 5.dp)
+                                        )
+
+                                        Spacer(modifier = Modifier.width(7.dp))
+
+                                        Text("Mon-Sat / 9:00AM - 5:00PM", modifier = Modifier.padding(end = 5.dp) ,fontSize = 12.sp)
+                                    }
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(15.dp))
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 21.dp, end = 21.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xFF2260FF),
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .height(35.dp)
+                                    .width(80.dp),
+                                contentAlignment = Alignment.CenterStart
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.calender),
+                                        contentDescription = "Rating",
+                                        tint = Color(0xFFFFFFFF),
+                                        modifier = Modifier.size(18.dp).padding(start = 7.dp)
+                                    )
+
+                                    Spacer(modifier = Modifier.width(5.dp))
+
                                     Text(
-                                        text = "Focus: The impact of hormonal imbalances on skin conditions, specializing in acne, hirsutism, and other skin disorders.",
-                                        fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
-                                        textAlign = TextAlign.Center,
-                                        color = Color(0xFF2260FF)
+                                        text = "Schedule",
+                                        fontSize = 12.sp,
+                                        color = Color(0xFFFFFFFF)
+                                    )
+                                }
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xFF2260FF),
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .height(35.dp)
+                                    .width(80.dp),
+                                contentAlignment = Alignment.CenterStart
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Icon(imageVector = Icons.Outlined.Call,
+                                        contentDescription = "Call",
+                                        tint = Color(0XFFFFFFFF),
+                                        modifier = Modifier.size(27.dp).padding(start = 15.dp)
+                                    )
+
+                                    Spacer(modifier = Modifier.width(7.dp))
+
+                                    Text(
+                                        text = "Call",
+                                        fontSize = 12.sp,
+                                        color = Color(0xFFFFFFFF)
+                                    )
+                                }
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xFF2260FF),
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .height(35.dp)
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                    modifier = Modifier.fillMaxSize()
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.message),
+                                        contentDescription = "Question",
+                                        tint = Color(0XFFFFFFFF),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+
+                                    Spacer(modifier = Modifier.width(5.dp))
+
+                                    Text(
+                                        text = "Message",
+                                        fontSize = 12.sp,
+                                        color = Color(0xFFFFFFFF),
+                                        modifier = Modifier.padding(start = 2.dp)
                                     )
                                 }
                             }
                         }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 250.dp)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(painter = painterResource(R.drawable.star),
-                                contentDescription = "Rating",
-                                tint = Color.Yellow
-                            )
-
-                            Text("-", fontSize = 12.sp)
-                        }
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(painter = painterResource(R.drawable.message),
-                                contentDescription = "Reviews",
-                                tint = Color.Gray
-                            )
-
-                            Text("-", fontSize = 12.sp)
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(painter = painterResource(R.drawable.clock),
-                                contentDescription = "Availability",
-                                tint = Color.Gray
-                            )
-
-                            Text("Mon-Sat / 9:00AM - 5:00PM", fontSize = 12.sp)
-                        }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 280.dp)
-                    ) {
-                        Button(
-                            onClick = {  },
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Icon(painter = painterResource(R.drawable.calender), contentDescription = "Schedule", modifier = Modifier.size(16.dp))
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Schedule", fontSize = 12.sp)
-                        }
-                        IconButton(onClick = { /* Handle info */ }) {
-                            Icon(imageVector = Icons.Outlined.Call, contentDescription = "Info", tint = Color.Gray)
-                        }
-                        IconButton(onClick = { /* Handle question */ }) {
-                            Icon(painter = painterResource(R.drawable.message), contentDescription = "Question", tint = Color.Gray)
-                        }
+                        Spacer(modifier = Modifier.height(15.dp))
                     }
                 }
 
@@ -308,28 +511,37 @@ fun DoctorsInformationUI(navHostController: NavHostController) {
                     text = "Profile",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
+
                 Text(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = "Career Path",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
+
                 Text(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = "Highlights",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
+
                 Text(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
+
+                Spacer(modifier = Modifier.height(15.dp))
+
             }
         }
     }
