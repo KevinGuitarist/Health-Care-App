@@ -2,6 +2,7 @@ package com.kevinguitarist.healthcareappown1.patients
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
@@ -43,6 +45,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -164,37 +167,62 @@ fun DoctorsInformationUI(navHostController: NavHostController) {
                             Spacer(modifier = Modifier.width(10.dp))
 
                             Column {
-                                Box(modifier = Modifier.fillMaxWidth().height(40.dp).background(color = Color(0xFF2260FF),
-                                    shape = RoundedCornerShape(18.dp)),
-                                ){
-                                    Row(){
-                                        Box(){
-                                            Image(modifier = Modifier.align(Alignment.CenterStart).padding(horizontal = 3.dp, vertical = 3.dp),
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(40.dp)
+                                        .background(
+                                            color = Color(0xFF2260FF),
+                                            shape = RoundedCornerShape(20.dp)
+                                        ),
+                                    contentAlignment = Alignment.CenterStart // Align content to the start
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Start
+                                    ) {
+
+                                        // Rounded Image Background
+                                        Box(
+                                            modifier = Modifier
+                                                .size(40.dp) // Match the background height
+                                                .background(
+                                                    color = Color(0x40FFFFFF),
+                                                    shape = CircleShape
+                                                ),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Image(
+                                                modifier = Modifier
+                                                    .size(24.dp),
                                                 painter = painterResource(R.drawable.experience),
-                                                contentDescription = "Experience"
+                                                contentDescription = "Experience",
                                             )
                                         }
 
-                                        Spacer(modifier = Modifier.width(10.dp))
+                                        Spacer(modifier = Modifier.width(8.dp)) //  Slightly wider spacer
 
-                                        Column(modifier = Modifier.fillMaxSize()) {
-                                            Box(modifier = Modifier.wrapContentSize(align = Alignment.TopCenter)){
-                                                Text(
-                                                    text = "15 Years",
-                                                    fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 12.sp,
-                                                    color = Color(0xFFFFFFFF),
-                                                    modifier = Modifier.padding(top = 5.dp)
-                                                )
-                                            }
+                                        Column(
+                                            verticalArrangement = Arrangement.spacedBy(0.dp) //  No spacing between lines
+                                        ) {
+                                            Text(
+                                                text = "15 years",
+                                                fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
+                                                fontSize = 16.sp,
+                                                fontWeight = FontWeight.SemiBold, // Ensure boldness
+                                                color = Color.White,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
 
                                             Text(
-                                                text = "Experience",
-                                                fontFamily = FontFamily(Font(R.font.leaguespartan_medium)),
-                                                fontSize = 8.sp,
-                                                color = Color(0xFFFFFFFF),
-                                                modifier = Modifier.padding(top = 0.dp)
+                                                text = "experience",
+                                                fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
+                                                fontSize = 16.sp,
+                                                fontWeight = FontWeight.Thin,
+                                                color = Color.White,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
                                             )
                                         }
                                     }
