@@ -92,7 +92,7 @@ fun NavigationMain(){
             arguments = listOf(navArgument("doctorId") { type = NavType.StringType })
         ) { backStackEntry ->
             val doctorId = backStackEntry.arguments?.getString("doctorId")
-            DoctorsInformationUI(navHostController = navController)
+            DoctorsInformationUI(navHostController = navController, doctorId = doctorId ?: "")
         }
     }
 }

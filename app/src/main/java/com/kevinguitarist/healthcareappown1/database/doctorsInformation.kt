@@ -53,4 +53,21 @@ class DoctorDatabaseManager {
             }
         })
     }
+
+    fun getDoctorById(doctorId: String, onSuccess: (DoctorInformation) -> Unit, onError: (String) -> Unit) {
+        doctorsRef.child(doctorId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val doctorInfo = snapshot.getValue(DoctorInformation::class.java)
+                if (doctorInfo != null) {
+                    onSuccess(doctorInfo)
+                } else {
+                    onError("Doctor not found")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onError(error.message)
+            }
+        })
+    }
 }
