@@ -174,8 +174,14 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        Row(modifier = Modifier.padding(top = 18.dp, start = 21.dp, end = 21.dp)){
-                            Box(modifier = Modifier.wrapContentSize(align = Alignment.TopStart)) {
+                        Row(modifier = Modifier.padding(top = 18.dp, start = 21.dp, end = 21.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .wrapContentSize(align = Alignment.TopStart)
+                                    .size(100.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFFECF1FF))
+                            ) {
                                 if (!doctorData?.imageUrl.isNullOrEmpty()) {
                                     val context = LocalContext.current
                                     Image(
@@ -199,8 +205,7 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
                                         painter = painterResource(id = R.drawable.user),
                                         contentDescription = "Default Doctor Image",
                                         modifier = Modifier
-                                            .size(100.dp)
-                                            .clip(CircleShape),
+                                            .size(100.dp),
                                         contentScale = ContentScale.Crop
                                     )
                                 }
@@ -248,7 +253,7 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
                                             verticalArrangement = Arrangement.spacedBy(0.dp)
                                         ) {
                                             Text(
-                                                text = "15 years",
+                                                text = "${doctorData?.experience ?: "0"} years",
                                                 fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
                                                 fontSize = 16.sp,
                                                 fontWeight = FontWeight.SemiBold,
@@ -293,7 +298,7 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
                                         )
 
                                         Text(
-                                            text = "The impact of hormonal imbalances on skin conditions, specializing in acne, hirsutism, and other skin disorders.",
+                                            text = doctorData?.focus ?: "Not specified",
                                             fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
                                             color = Color.White,
                                             textAlign = TextAlign.Start,
@@ -322,15 +327,16 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = "Dr. Alexander Bennett, Ph.D.",
+                                    text = "Dr. ${doctorData?.doctorName ?: ""}",
+                                    fontFamily = FontFamily(Font(R.font.leaguespartan_semibold)),
                                     color = Color(0xFF2260FF),
                                     fontSize = 16.sp,
-                                    fontWeight = FontWeight.SemiBold,
                                     textAlign = TextAlign.Center
                                 )
 
                                 Text(
-                                    text = "Dermato-Genetics",
+                                    text = doctorData?.profile ?: "",
+                                    fontFamily = FontFamily(Font(R.font.leaguespartan_light)),
                                     color = Color.Gray,
                                     fontSize = 14.sp,
                                     textAlign = TextAlign.Center,
@@ -432,7 +438,11 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
 
                                         Spacer(modifier = Modifier.width(7.dp))
 
-                                        Text("Mon-Sat / 9:00AM - 5:00PM", modifier = Modifier.padding(end = 5.dp) ,fontSize = 12.sp)
+                                        Text(
+                                            text = "${doctorData?.workingDays ?: "Mon-Sat"} / ${doctorData?.workingHours ?: "9:00AM - 5:00PM"}",
+                                            modifier = Modifier.padding(end = 5.dp),
+                                            fontSize = 12.sp
+                                        )
                                     }
                                 }
                             }
@@ -548,11 +558,11 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
 
                 Text(
                     text = "Profile",
-                    fontFamily = FontFamily(Font(R.font.leaguespartan_light))
+                    fontFamily = FontFamily(Font(R.font.leaguespartan_semibold))
                 )
 
                 Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    text = doctorData?.profile ?: "",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
 
@@ -560,22 +570,22 @@ fun DoctorsInformationUI(navHostController: NavHostController, doctorId: String)
 
                 Text(
                     text = "Career Path",
-                    fontFamily = FontFamily(Font(R.font.leaguespartan_light))
+                    fontFamily = FontFamily(Font(R.font.leaguespartan_semibold))
                 )
 
                 Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    text = doctorData?.careerPath ?: "",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = "Highlights",
-                    fontFamily = FontFamily(Font(R.font.leaguespartan_light))
+                    fontFamily = FontFamily(Font(R.font.leaguespartan_semibold))
                 )
 
                 Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    doctorData?.highlights?: "",
                     fontFamily = FontFamily(Font(R.font.leaguespartan_light))
                 )
 

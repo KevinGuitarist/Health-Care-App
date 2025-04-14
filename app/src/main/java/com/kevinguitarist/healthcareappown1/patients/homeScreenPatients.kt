@@ -51,7 +51,7 @@ import com.kevinguitarist.healthcareappown1.database.DoctorDatabaseManager
 import com.kevinguitarist.healthcareappown1.database.DoctorInformation
 
 @Composable
-fun HomePage(navHostController: NavHostController) {
+fun HomeScreenPatients(navHostController: NavHostController) {
     val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
     val imageUrl = currentUser?.photoUrl
     val displayName = currentUser?.displayName

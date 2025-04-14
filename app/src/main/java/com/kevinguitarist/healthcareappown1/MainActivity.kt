@@ -21,9 +21,9 @@ import com.kevinguitarist.healthcareappown1.authentication_ui.signUp
 import com.kevinguitarist.healthcareappown1.authentication_ui.signUp_doctor
 import com.kevinguitarist.healthcareappown1.doctors.formscreenDoctors
 import com.kevinguitarist.healthcareappown1.doctors.homeScreenDoctors
-import com.kevinguitarist.healthcareappown1.patients.HomePage
 import com.kevinguitarist.healthcareappown1.ui.theme.HealthCareAppOwn1Theme
 import com.kevinguitarist.healthcareappown1.patients.DoctorsInformationUI
+import com.kevinguitarist.healthcareappown1.patients.HomeScreenPatients
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +82,12 @@ fun NavigationMain(){
         composable(WelcomeScreen.route) { welcomeScreen(navController) }
         composable(LoginScreen.route) { loginScreen(navController) }
         composable(SignUpScreen.route) { signUp(navController) }
-        composable(HomeScreen.route) { HomePage(navController) }
+        composable(HomeScreen.route) { 
+            HomeScreenPatients(navController)
+            LaunchedEffect(Unit) {
+                navController.popBackStack(WelcomeScreen.route, inclusive = true)
+            }
+        }
         composable(LoginDoctorScreen.route) { Login_Doctor(navController) }
         composable(SignUpDoctorScreen.route) { signUp_doctor(navController) }
         composable(FormScreenDoctor.route) { formscreenDoctors(navController, context) }

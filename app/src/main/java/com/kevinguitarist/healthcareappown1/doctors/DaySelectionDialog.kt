@@ -21,7 +21,7 @@ fun DaySelectionDialog(
     onDismiss: () -> Unit,
     onConfirm: (String, String) -> Unit
 ) {
-    val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+    val days = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
     var selectedStartDay by remember { mutableStateOf(days[0]) }
     var selectedEndDay by remember { mutableStateOf(days[5]) }
 
