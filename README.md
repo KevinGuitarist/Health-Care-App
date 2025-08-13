@@ -1,7 +1,6 @@
 # HealthConnect - Doctor-Patient Platform
 
-![App Screenshot](https://via.placeholder.com/300x600?text=HealthConnect+Screenshot) 
-*(Replace with actual screenshot)*
+https://via.placeholder.com/300x600?text=HealthConnect+Screenshot) 
 
 A modern healthcare application connecting patients with doctors, built with Jetpack Compose and Firebase.
 
