@@ -1,6 +1,12 @@
 # HealthConnect - Doctor-Patient Platform
 
-![Login Screen] (https://res.cloudinary.com/dpqfsltxu/image/upload/v1755112219/Welcome_Screen_y3eclj.jpg)
+## Screenshots
+
+<div align="center">
+  <img src="C:\Users\Vivek Thapa\OneDrive\Desktop\SS_Healthcare App" width="30%" />
+  <img src="screenshots/doctor_profile.png" width="30%" /> 
+  <img src="screenshots/login_screen.png" width="30%" />
+</div>
 
 A modern healthcare application connecting patients with doctors, built with Jetpack Compose and Firebase.
 
