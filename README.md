@@ -6,6 +6,15 @@
   <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Welcome Screen.jpg" width="20%" />
   <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Patient's Login Screen.jpg" width="20%" /> 
   <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Patient's SignUp screen.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Doctor's SignUp Screen.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Doctor's Form Screen.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Doctor's Form Screen 2.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Patient's Home Screen.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Doctor's info.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Select Availability Days.jpg" width="20%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Select Availability Hours.jpg" width="20%" />
+
+
 </div>
 
 A modern healthcare application connecting patients with doctors, built with Jetpack Compose and Firebase.
