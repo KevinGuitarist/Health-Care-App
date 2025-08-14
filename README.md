@@ -3,7 +3,7 @@
 ## Screenshots
 
 <div align="center">
-  <img src="C:\Users\Vivek Thapa\OneDrive\Desktop\SS_Healthcare App" width="30%" />
+  <img src="app/src/main/java/com/kevinguitarist/healthcareappown1/screenshots/Welcome Screen.jpg" width="30%" />
   <img src="screenshots/doctor_profile.png" width="30%" /> 
   <img src="screenshots/login_screen.png" width="30%" />
 </div>
